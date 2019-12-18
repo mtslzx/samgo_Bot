@@ -110,10 +110,9 @@ function handleMessage(sender_psid, received_message) {
         response = {
             "text": `You sent the message: "${received_message.text}". Now send me an attachment!`
         }
-    } else if (received_message.text == "오늘의 급식") {
+    } else if (received_message.text = "오늘의 급식") {
         //오늘 날짜를 가져옵니다.
         let today = new Date();   
-        
         response =  {
             "text": `"${today.toLocaleDateString()}" 의 급식 정보입니다.`
         }

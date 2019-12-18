@@ -113,8 +113,11 @@ function handleMessage(sender_psid, received_message) {
     } else if (received_message.text = "오늘의 급식") {
         //오늘 날짜를 가져옵니다.
         let today = new Date();   
+        let year = today.getFullYear(); // 년도
+        let month = today.getMonth() + 1;  // 월
+        let date = today.getDate();  // 날짜
         response =  {
-            "text": `"${today.toLocaleDateString()}" 의 급식 정보입니다.`
+            "text": `${year}년 ${month}월 ${date}일의 급식 정보입니다.`
         }
     }
     

@@ -104,7 +104,7 @@ function handleMessage(sender_psid, received_message) {
     let response;
 
     // Checks if the message contains text
-    if (received_message.text) {
+    if (received_message.text =! "오늘의 급식") {
         // Create the payload for a basic text message, which
         // will be added to the body of our request to the Send API
         response = {

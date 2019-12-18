@@ -110,16 +110,7 @@ function handleMessage(sender_psid, received_message) {
         response = {
             "text": `You sent the message: "${received_message.text}". Now send me an attachment!`
         }
-    } else if (received_message.text == "오늘의 급식") {
-        //오늘 날짜를 가져옵니다.
-        let today = new Date();   
-        
-        response =  {
-            "text": `"${today.toLocaleDateString()}" 의 급식 정보입니다.`
-        }
-    }
-    
-    else if (received_message.attachments) {
+    } else if (received_message.attachments) {
         // Get the URL of the message attachment
         let attachment_url = received_message.attachments[0].payload.url;
         response = {
@@ -158,9 +149,6 @@ function handlePostback(sender_psid, received_postback) {
     let response;
     // Get the payload for the postback
     let payload = received_postback.payload;
-    // 오늘의 날짜를 가져옵니다.
-    let today = new Date();   
-
 
     // Set the response based on the postback payload
     if (payload === 'yes') {

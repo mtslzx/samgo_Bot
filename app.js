@@ -131,15 +131,17 @@ function handleMessage(sender_psid, received_message) {
             today_dinner = json["menu"][0]['dinner'] // 저녁 정보 가져오기
             console.log('[LOG]' + today_lunch);
             console.log('[LOG]' + today_dinner);
+            response = {
+                "text": `${month}월 ${date}일의 급식 정보입니다.\n[점심]\n${today_lunch}\n[저녁]\n${today_dinner}`
+            }
+            console.log('[END] request');
         });
         console.log('2-5'); //debug
         //var today_date = json["menu"][0]['date'] // 급식 표에 적힌 날짜 가져오기 //오류 발생
        
         console.log(today_lunch)
         console.log('2-6'); //debug
-        response =  {
-            "text": `${month}월 ${date}일의 급식 정보입니다.\n[점심]\n${str(today_lunch)}\n[저녁]\n${str(today_dinner)}`
-        }
+        
         /*
         for (var i = 0; i < json["menu"][0]['dinner'].length; i++) { //배열 출력
             console.log(i);

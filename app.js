@@ -128,9 +128,9 @@ function handleMessage(sender_psid, received_message) {
         response =  {
             "text": `${month}월 ${date}일의 급식 정보입니다.\n`,
             "text": `[점심]`,
-            "text": `${today_lunch}\n`,
+            //"text": `${today_lunch}\n`,
             "text": `[저녁]`,
-            "text": `${today_dinner}`
+            //"text": `${today_dinner}`
         }
     }
     

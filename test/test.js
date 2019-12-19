@@ -21,9 +21,9 @@ request(url, (err, res, body) => {
     //    console.log(json['menu'][i].name + " / " + json['menu'][i].height+"<br>");
    //}
    console.log('중간단계')
-    /* for(var i=0;i<json["menu"].length;i++){ //배열 출력
+     for(var i=0;i<json["menu"][0]['dinner'].length;i++){ //배열 출력
         console.log(i);
-        console.log(json["menu"][i]+"<br>");
-    } */
+        console.log(json["menu"][0]['dinner'][i]+"<br>");
+    } 
     console.log('프로그램 종료');
 });

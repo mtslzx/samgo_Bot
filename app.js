@@ -105,7 +105,7 @@ function handleMessage(sender_psid, received_message) {
     let response;
     console.log('[알림] 메시지 받음');
     // Checks if the message contains text
-    if (received_message.text != "오늘의 급식") {
+    if (received_message.text != "오늘의 급식" || "내일의 급식") {
         // Create the payload for a basic text message, which
         // will be added to the body of our request to the Send API
         console.log('2-2'); //debug

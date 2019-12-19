@@ -109,7 +109,6 @@ function handleMessage(sender_psid, received_message) {
         // will be added to the body of our request to the Send API
         response = {
             "text": `You sent the message: "${received_message.text}". Now send me an attachment!`,
-            "text": `응답 끝`
         }
     } else if (received_message.text == "오늘의 급식") {
         //오늘 날짜를 가져옵니다.

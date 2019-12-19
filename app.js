@@ -131,6 +131,7 @@ function handleMessage(sender_psid, received_message) {
             today_dinner = json["menu"][0]['dinner'] // 저녁 정보 가져오기
             console.log('[LOG]' + today_lunch);
             console.log('[LOG]' + today_dinner);
+            today_lunch = str.replace(/,/g, "\n");
             response = {
                 "text": `${month}월 ${date}일의 급식 정보입니다.\n[점심]\n${today_lunch}\n[저녁]\n${today_dinner}`
             }

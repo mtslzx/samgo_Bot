@@ -227,6 +227,12 @@ function handlePostback(sender_psid, received_postback) {
         response = { "text": "고마워요!" }
     } else if (payload === 'no') {
         response = { "text": "이런, 못 본척해드릴게요." }
+    } else if (payload == 'FACEBOOK_WELCOME'){
+        response = {
+            "type": "postback",
+            "title": "<BUTTON_TEXT>",
+            "payload": "<DEVELOPER_DEFINED_PAYLOAD>"}
+            //"text": "안녕하세요!\n저는 삼고 급식봇입니다!\n최대한 빠르게 오늘의 급식을 알려드리도록 하겠습니다.\n 시작하려면 '오늘의 급식' 혹은 '내일의 급식'을 보내주세요."}
     }
     // Send the message to acknowledge the postback
     callSendAPI(sender_psid, response);

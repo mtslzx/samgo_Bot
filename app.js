@@ -71,7 +71,7 @@ app.post('/webhook', (req, res) => {
     }
 
 });
-
+console.log('1');
 // Accepts GET requests at the /webhook endpoint
 app.get('/webhook', (req, res) => {
 
@@ -99,6 +99,7 @@ app.get('/webhook', (req, res) => {
         }
     }
 });
+console.log('2');
 
 function handleMessage(sender_psid, received_message) {
     let response;
@@ -170,6 +171,7 @@ function handleMessage(sender_psid, received_message) {
     // Send the response message
     callSendAPI(sender_psid, response);
 }
+console.log('3');
 
 function handlePostback(sender_psid, received_postback) {
     console.log('ok')
@@ -189,6 +191,7 @@ function handlePostback(sender_psid, received_postback) {
     // Send the message to acknowledge the postback
     callSendAPI(sender_psid, response);
 }
+console.log('4');
 
 function callSendAPI(sender_psid, response) {
     // Construct the message body
@@ -213,3 +216,4 @@ function callSendAPI(sender_psid, response) {
         }
     });
 }
+console.log('5');

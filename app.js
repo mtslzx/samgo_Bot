@@ -126,11 +126,7 @@ function handleMessage(sender_psid, received_message) {
             var today_dinner = json["menu"][0]['dinner'] // 저녁 정보 가져오기
         });
         response =  {
-            "text": `${month}월 ${date}일의 급식 정보입니다.\n`,
-            "text": `[점심]`,
-            //"text": `${today_lunch}\n`,
-            "text": `[저녁]`,
-            //"text": `${today_dinner}`
+            "text": `${month}월 ${date}일의 급식 정보입니다.\n[점심]\n${today_lunch}\n[저녁]\n${today_dinner}`
         }
     }
     

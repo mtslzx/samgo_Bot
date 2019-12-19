@@ -113,6 +113,7 @@ function handleMessage(sender_psid, received_message) {
         }
     } else if (received_message.text == "오늘의 급식") {
         //오늘 날짜를 가져옵니다.
+        var json; // json 윗쪽에 변수 선언
         let today = new Date();   
         let year = today.getFullYear(); // 년도
         let month = today.getMonth() + 1;  // 월
@@ -120,7 +121,7 @@ function handleMessage(sender_psid, received_message) {
         //급식정보 API 불러오기
         const url = `https://schoolmenukr.ml/api/high/S100000591?date=${date}`;
         request(url, (err, res, body) => {
-            var json = JSON.parse(body);
+            json = JSON.parse(body);
             //console.log(json); // 파싱한 json 로그 출력
         });
         //var today_date = json["menu"][0]['date'] // 급식 표에 적힌 날짜 가져오기 //오류 발생

@@ -138,7 +138,7 @@ function handleMessage(sender_psid, received_message) {
         console.log(today_lunch)
         console.log('2-6'); //debug
         response =  {
-            "text": `${month}월 ${date}일의 급식 정보입니다.\n[점심]\n${today_lunch}\n[저녁]\n${today_dinner}`
+            "text": `${month}월 ${date}일의 급식 정보입니다.\n[점심]\n${str(today_lunch)}\n[저녁]\n${str(today_dinner)}`
         }
         /*
         for (var i = 0; i < json["menu"][0]['dinner'].length; i++) { //배열 출력

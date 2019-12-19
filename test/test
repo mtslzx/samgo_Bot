@@ -1,0 +1,5 @@
+https://schoolmenukr.ml/api/high/S100000591?date=19
+"{"menu":[{"date":"19","lunch":["배추김치(중)9.13.","보리밥","북어국1.5.6.9.13.18.","등갈비김치찜5.6.9.10.13.18.","주꾸미잔파무침5.6.13.18.","다시마쌈+양념장13."],"breakfast":[],"dinner":["배추김치(소)9.13.","쇠고기무국5.6.9.13.16.18.","순대야채볶음5.6.10.13.18.","현미찰밥","김무침5.6.13.18.","야채튀김2.5.6.13.18.","깻잎겉절이5.6.13.18."]}],"server_message":["문제가 발생했거나 건의사항이 있는 경우 GitHub 저장소 페이지에 이슈를 남겨주세요: https://github.com/5d-jh/school-menu-api/issues","현 서버에 적용된 3.2.7 버전의 변경 사항을 확인하려면 다음 링크를 참고하세요: https://github.com/5d-jh/school-menu-api/releases/tag/3.2.7","자체 서버에서 데이터를 불러왔습니다."]}"
+'{"pokemon":[{"name":"꼬부기","height":130},{"name":"파이리","height":90}]}'
+jsonObj['pokemon'][i].name
+jsonObj['menu'].['lunch'][i]

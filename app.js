@@ -121,14 +121,14 @@ function handleMessage(sender_psid, received_message) {
         request(url, (err, res, body) => {
             var json = JSON.parse(body);
             console.log(json); // 파싱한 json 로그 출력
-            var today_date = json["menu"][0]['date'] // 급식 표에 적힌 날짜 가져오기
+            //var today_date = json["menu"][0]['date'] // 급식 표에 적힌 날짜 가져오기 //오류 발생
             var today_lunch = json["menu"][0]['lunch']; // 점심 정보 가져오기
             var today_dinner = json["menu"][0]['dinner'] // 저녁 정보 가져오기
         });
         response =  {
-            "text": `${month}월 ${today_date}일의 급식 정보입니다.\n`,
+            "text": `${month}월 ${date}일의 급식 정보입니다.\n`,
             "text": `[점심]`,
-            "text": `${today_lunch}`,
+            "text": `${today_lunch}\n`,
             "text": `[저녁]`,
             "text": `${today_dinner}`
         }

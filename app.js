@@ -103,31 +103,36 @@ console.log('2');
 
 function handleMessage(sender_psid, received_message) {
     let response;
-
+    console.log('2-1');
     // Checks if the message contains text
     if (received_message.text != "오늘의 급식") {
         // Create the payload for a basic text message, which
         // will be added to the body of our request to the Send API
+        console.log('2-2'); //debug
         response = {
             "text": `You sent the message: "${received_message.text}". Now send me an attachment!`,
         }
     } else if (received_message.text == "오늘의 급식") {
         //오늘 날짜를 가져옵니다.
+        console.log('2-3'); //debug
         var json; // json 윗쪽에 변수 선언
         let today = new Date();   
         let year = today.getFullYear(); // 년도
         let month = today.getMonth() + 1;  // 월
         let date = today.getDate();  // 날짜
         //급식정보 API 불러오기
+        console.log('2-4'); //debug
         const url = `https://schoolmenukr.ml/api/high/S100000591?date=${date}`;
         request(url, (err, res, body) => {
             json = JSON.parse(body);
             //console.log(json); // 파싱한 json 로그 출력
         });
+        console.log('2-5'); //debug
         //var today_date = json["menu"][0]['date'] // 급식 표에 적힌 날짜 가져오기 //오류 발생
         let today_lunch = json["menu"][0]['lunch']; // 점심 정보 가져오기
         let today_dinner = json["menu"][0]['dinner'] // 저녁 정보 가져오기
         console.log(today_lunch)
+        console.log('2-6'); //debug
         response =  {
             "text": `${month}월 ${date}일의 급식 정보입니다.\n[점심]\n${today_lunch}\n[저녁]\n${today_dinner}`
         }
@@ -136,6 +141,7 @@ function handleMessage(sender_psid, received_message) {
             console.log(i);
             let response = (json["menu"][0]['dinner'][i] + "<br>");
         } */
+        console.log('2-7'); //debug
     }
     
     else if (received_message.attachments) {

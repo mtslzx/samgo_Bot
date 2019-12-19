@@ -103,7 +103,7 @@ console.log('2');
 
 function handleMessage(sender_psid, received_message) {
     let response;
-    console.log('2-1');
+    console.log('[알림] 메시지 받음');
     // Checks if the message contains text
     if (received_message.text != "오늘의 급식") {
         // Create the payload for a basic text message, which
@@ -114,7 +114,7 @@ function handleMessage(sender_psid, received_message) {
         }
     } else if (received_message.text == "오늘의 급식") {
         //오늘 날짜를 가져옵니다.
-        console.log('2-3'); //debug
+        console.log('[시작] 오늘의 급식'); //debug
         var json; // json 윗쪽에 변수 선언
         let today = new Date();   
         let year = today.getFullYear(); // 년도
@@ -122,7 +122,7 @@ function handleMessage(sender_psid, received_message) {
         let date = today.getDate();  // 날짜
         let today_lunch, today_dinner;
         //급식정보 API 불러오기
-        console.log('2-4'); //debug
+        console.log('[함수 선언 완료] 오늘의 급식'); //debug
         const url = `https://schoolmenukr.ml/api/high/S100000591?date=${date}`;
         request(url, (err, res, body) => {
             json = JSON.parse(body);
@@ -139,18 +139,45 @@ function handleMessage(sender_psid, received_message) {
             callSendAPI(sender_psid, response);
             console.log('[END] request');
         });
-        console.log('2-5'); //debug
+        console.log('[종료] 오늘의 급식'); //debug
         //var today_date = json["menu"][0]['date'] // 급식 표에 적힌 날짜 가져오기 //오류 발생
        
-        console.log(today_lunch)
-        console.log('2-6'); //debug
+        //console.log(today_lunch)
+        //console.log('2-6'); //debug
         
         /*
         for (var i = 0; i < json["menu"][0]['dinner'].length; i++) { //배열 출력
             console.log(i);
             let response = (json["menu"][0]['dinner'][i] + "<br>");
         } */
-        console.log('2-7'); //debug
+        //console.log('2-7'); //debug
+    } else if (received_message.text == "내일의 급식") {
+        //오늘 날짜를 가져옵니다.
+        console.log('[시작] 내일의 급식'); //debug
+        var json; // json 윗쪽에 변수 선언
+        let today = new Date();
+        let month = today.getMonth() + 1;  // 월
+        let date = today.getDate() + 1;  // 날짜
+        let today_lunch, today_dinner;
+        //급식정보 API 불러오기
+        console.log('[함수 선언 완료] 내일의 급식'); //debug
+        const url = `https://schoolmenukr.ml/api/high/S100000591?date=${date}`;
+        request(url, (err, res, body) => {
+            json = JSON.parse(body);
+            //console.log(json); // 파싱한 json 로그 출력
+            today_lunch = json["menu"][0]['lunch']; // 점심 정보 가져오기
+            today_dinner = json["menu"][0]['dinner'] // 저녁 정보 가져오기
+            console.log('[LOG]' + today_lunch);
+            console.log('[LOG]' + today_dinner);
+            today_lunch = str(today_lunch);
+            today_lunch = str.replace(/,/g, "\n");
+            response = {
+                "text": `${month}월 ${date}일의 급식 정보입니다.\n[점심]\n${today_lunch}\n[저녁]\n${today_dinner}`
+            }
+            callSendAPI(sender_psid, response);
+            console.log('[END] request');
+        });
+        console.log('[종료] 내일의 급식'); //debug
     }
     
     else if (received_message.attachments) {
@@ -162,18 +189,18 @@ function handleMessage(sender_psid, received_message) {
                 "payload": {
                     "template_type": "generic",
                     "elements": [{
-                        "title": "Is this the right picture?",
-                        "subtitle": "Tap a button to answer.",
+                        "title": "이 사진은 무엇인가요?",
+                        //"subtitle": "Tap a button to answer.",
                         "image_url": attachment_url,
                         "buttons": [
                             {
                                 "type": "postback",
-                                "title": "Yes!",
+                                "title": "그냥 가져!",
                                 "payload": "yes",
                             },
                             {
                                 "type": "postback",
-                                "title": "No!",
+                                "title": "잘못 올렸어!",
                                 "payload": "no",
                             }
                         ],
@@ -199,9 +226,9 @@ function handlePostback(sender_psid, received_postback) {
 
     // Set the response based on the postback payload
     if (payload === 'yes') {
-        response = { "text": "Thanks!" }
+        response = { "text": "고마워요!" }
     } else if (payload === 'no') {
-        response = { "text": "Oops, try sending another image." }
+        response = { "text": "이런, 못 본척해드릴게요." }
     }
     // Send the message to acknowledge the postback
     callSendAPI(sender_psid, response);

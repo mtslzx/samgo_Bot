@@ -1,24 +1,8 @@
-
-/**
- * Copyright 2017-present, Facebook, Inc. All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * Messenger Platform Quick Start Tutorial
- *
- * This is the completed code for the Messenger Platform quick start tutorial
- *
- * https://developers.facebook.com/docs/messenger-platform/getting-started/quick-start/
- *
- * To run this code, you must do the following:
- *
- * 1. Deploy this code to a server running Node.js
- * 2. Run `npm install`
- * 3. Update the VERIFY_TOKEN
- * 4. Add your PAGE_ACCESS_TOKEN to your environment vars
- *
- */
+/*
+삼고 급식봇β 2019-12-18 ~ 
+https://developers.facebook.com/docs/messenger-platform
+Facebook Tutorial Guide 참조.
+*/
 
 'use strict';
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
@@ -71,7 +55,7 @@ app.post('/webhook', (req, res) => {
     }
 
 });
-console.log('1');
+console.log('post 완료!');
 // Accepts GET requests at the /webhook endpoint
 app.get('/webhook', (req, res) => {
 
@@ -99,7 +83,7 @@ app.get('/webhook', (req, res) => {
         }
     }
 });
-console.log('2');
+console.log('get 완료!');
 
 function handleMessage(sender_psid, received_message) {
     let response;
@@ -211,7 +195,7 @@ function handleMessage(sender_psid, received_message) {
     // Send the response message
     callSendAPI(sender_psid, response);
 }
-console.log('3');
+console.log('handleMessage 완료!');
 
 function handlePostback(sender_psid, received_postback) {
     console.log('ok')
@@ -233,7 +217,7 @@ function handlePostback(sender_psid, received_postback) {
     // Send the message to acknowledge the postback
     callSendAPI(sender_psid, response);
 }
-console.log('4');
+console.log('HandlePostback 완료!');
 
 function callSendAPI(sender_psid, response) {
     // Construct the message body
@@ -258,4 +242,6 @@ function callSendAPI(sender_psid, response) {
         }
     });
 }
-console.log('5');
+console.log('CallSendAPI 완료!');
+console.log('초기화 완료!');
+

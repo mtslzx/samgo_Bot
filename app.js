@@ -134,7 +134,7 @@ function handleMessage(sender_psid, received_message) {
             //today_lunch = str(today_lunch);
             //today_lunch = str.replace(/,/g, "\n");
             response = {
-                "text": `${month}월 ${date}일의 급식 정보입니다.\n[점심]\n${today_lunch}\n[저녁]\n${today_dinner}`
+                "text": `${month}월 ${date}일의 급식 정보입니다.\n\n[점심]\n${today_lunch}\n\n[저녁]\n${today_dinner}`
             }
             callSendAPI(sender_psid, response);
             console.log('[END] request');
@@ -170,7 +170,7 @@ function handleMessage(sender_psid, received_message) {
             console.log('[LOG]' + today_lunch);
             console.log('[LOG]' + today_dinner);
             response = {
-                "text": `${month}월 ${date}일의 급식 정보입니다.\n[점심]\n${today_lunch}\n[저녁]\n${today_dinner}`
+                "text": `${month}월 ${date}일의 급식 정보입니다.\n\n[점심]\n${today_lunch}\n\n[저녁]\n${today_dinner}`
             }
             callSendAPI(sender_psid, response);
             console.log('[END] request');
@@ -228,11 +228,7 @@ function handlePostback(sender_psid, received_postback) {
     } else if (payload === 'no') {
         response = { "text": "이런, 못 본척해드릴게요." }
     } else if (payload == 'FACEBOOK_WELCOME'){
-        response = {
-            "type": "postback",
-            "title": "<BUTTON_TEXT>",
-            "payload": "<DEVELOPER_DEFINED_PAYLOAD>"}
-            //"text": "안녕하세요!\n저는 삼고 급식봇입니다!\n최대한 빠르게 오늘의 급식을 알려드리도록 하겠습니다.\n 시작하려면 '오늘의 급식' 혹은 '내일의 급식'을 보내주세요."}
+        response = { "text": "안녕하세요!\n저는 삼고 급식봇입니다!\n최대한 빠르게 오늘의 급식을 알려드리도록 하겠습니다.\n 시작하려면 '오늘의 급식' 혹은 '내일의 급식'을 보내주세요."}
     }
     // Send the message to acknowledge the postback
     callSendAPI(sender_psid, response);

@@ -55,7 +55,7 @@ app.post('/webhook', (req, res) => {
     }
 
 });
-console.log('post 완료!');
+console.log('[초기화] post 완료!');
 // Accepts GET requests at the /webhook endpoint
 app.get('/webhook', (req, res) => {
 
@@ -83,7 +83,7 @@ app.get('/webhook', (req, res) => {
         }
     }
 });
-console.log('get 완료!');
+console.log('[초기화] get 완료!');
 
 function handleMessage(sender_psid, received_message) {
     let response;
@@ -100,30 +100,14 @@ function handleMessage(sender_psid, received_message) {
         //오늘 날짜를 가져옵니다.
         console.log('[시작] 오늘의 급식'); //debug
         var json; // json 윗쪽에 변수 선언
-        let today = new Date();   
-        let year = today.getFullYear(); // 년도
-        let month = today.getMonth() + 1;  // 월
-        let date = today.getDate();  // 날짜
-        let today_lunch, today_dinner;
-
-        //Test Start
-        let now_date = new Date();
-        let offset = +9;
+        let now_date = new Date(); //wingnim.tistory.com/6
+        let offset = +9; // Heroku 서버 위치에 따른 시간대 맞춤
         var utc = now_date.getTime() + (now_date.getTimezoneOffset() * 60000);
         var nd = new Date(utc + (3600000 * offset));
-        var a = nd.getHours();
-        console.log('[테스트] 함수값 출력 시작');
-        console.log(today);
-        console.log(year);
-        console.log(month);
-        console.log(date);
-        console.log('[테스트] 티스토리 함수값 출력 시작');
-        console.log(now_date);
-        console.log(offset);
-        console.log(utc);
-        console.log(nd);
-        console.log('[테스트] 함수값 출력 종료');
-        //Test End 
+        let year = nd.getFullYear(); // 년도
+        let month =nd.getMonth() + 1;  // 월
+        let date = nd.getDate();  // 날짜
+        let today_lunch, today_dinner;
 
         //급식정보 API 불러오기
         console.log('[함수 선언 완료] 오늘의 급식'); //debug
@@ -159,10 +143,15 @@ function handleMessage(sender_psid, received_message) {
         //오늘 날짜를 가져옵니다.
         console.log('[시작] 내일의 급식'); //debug
         var json; // json 윗쪽에 변수 선언
-        let today = new Date();
-        let month = today.getMonth() + 1;  // 월
-        let date = today.getDate() + 1;  // 날짜
+        let now_date = new Date(); //wingnim.tistory.com/6
+        let offset = +9; // Heroku 서버 위치에 따른 시간대 맞춤
+        var utc = now_date.getTime() + (now_date.getTimezoneOffset() * 60000);
+        var nd = new Date(utc + (3600000 * offset));
+        let year = nd.getFullYear(); // 년도
+        let month = nd.getMonth() + 1;  // 월
+        let date = nd.getDate();  // 날짜
         let today_lunch, today_dinner;
+
         //급식정보 API 불러오기
         console.log('[함수 선언 완료] 내일의 급식'); //debug
         const url = `https://schoolmenukr.ml/api/high/S100000591?date=${date}`;
@@ -215,7 +204,7 @@ function handleMessage(sender_psid, received_message) {
     // Send the response message
     callSendAPI(sender_psid, response);
 }
-console.log('handleMessage 완료!');
+console.log('[초기화] handleMessage 완료!');
 
 function handlePostback(sender_psid, received_postback) {
     console.log('ok')
@@ -237,7 +226,7 @@ function handlePostback(sender_psid, received_postback) {
     // Send the message to acknowledge the postback
     callSendAPI(sender_psid, response);
 }
-console.log('HandlePostback 완료!');
+console.log('[초기화] HandlePostback 완료!');
 
 function callSendAPI(sender_psid, response) {
     // Construct the message body
@@ -262,6 +251,6 @@ function callSendAPI(sender_psid, response) {
         }
     });
 }
-console.log('CallSendAPI 완료!');
-console.log('초기화 완료!');
+console.log('[초기화] CallSendAPI 완료!');
+console.log('[초기화] 완료!');
 

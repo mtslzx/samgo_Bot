@@ -5,3 +5,10 @@
 학교식단 API에서 불러온 JSON만 고쳐서 출력하면 거의 다 온듯함
 
 고정 메시지 만들기는 아직 검토 못받음
+
+
+
+https://developers.facebook.com/docs/messenger-platform/reference/messenger-profile-api/
+curl -X POST -H "Content-Type: application/json" -d '{"get_started":{"payload":"시작하기"}' "https://graph.facebook.com/v6.0/me/messenger_profile?access_token=EAAKMoGRLTN4BAPYXclyMpeynUyieJ8jDTQ6DtLmWPLVcQANBB23IWKI8JK5FdL9JAnnc2ZAWbTIZA78ar8sR5a6NmY8dZAujpZALdZC6OQjKnhaikjZC6cI9LrHvWxJnS7ZBVaXBX3zC7nZCEDCny13K9iGdbF8ZArZBRWaiS7QqttdTKJsSyByh2r"
+이걸로 시작버튼 만들어야하는데 이런것만 튀어나옴
+{"error":{"message":"(#100) Requires one of the params: get_started,persistent_menu,target_audience,whitelisted_domains,greeting,account_linking_url,payment_settings,home_url,ice_breakers","type":"OAuthException","code":100,"fbtrace_id":"AIv9MJvTpNs6amjFPgtP6d9"}}

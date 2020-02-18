@@ -100,30 +100,17 @@ function handleMessage(sender_psid, received_message) {
         //오늘 날짜를 가져옵니다.
         console.log('[시작] 오늘의 급식'); //debug
         var json; // json 윗쪽에 변수 선언
-        let today = new Date();   
+        let today = new Date();
         let year = today.getFullYear(); // 년도
         let month = today.getMonth() + 1;  // 월
         let date = today.getDate();  // 날짜
         let today_lunch, today_dinner;
-
-        //Test Start
+        // wingnim의 tistory / heroku 서버 위치로 인한 시간차이 참조
         let now_date = new Date();
-        let offset = +9;
+        let offset =+9;
         var utc = now_date.getTime() + (now_date.getTimezoneOffset() * 60000);
-        var nd = new Date(utc + (3600000 * offset));
-        var a = nd.getHours();
-        console.log('[테스트] 함수값 출력 시작');
-        console.log(today);
-        console.log(year);
-        console.log(month);
-        console.log(date);
-        console.log('[테스트] 티스토리 함수값 출력 시작');
-        console.log(now_date);
-        console.log(offset);
-        console.log(utc);
-        console.log(nd);
-        console.log('[테스트] 함수값 출력 종료');
-        //Test End 
+        var nd = new Date(utc + (3600000*offset));
+        
 
         //급식정보 API 불러오기
         console.log('[함수 선언 완료] 오늘의 급식'); //debug
@@ -145,10 +132,10 @@ function handleMessage(sender_psid, received_message) {
         });
         console.log('[종료] 오늘의 급식'); //debug
         //var today_date = json["menu"][0]['date'] // 급식 표에 적힌 날짜 가져오기 //오류 발생
-       
+
         //console.log(today_lunch)
         //console.log('2-6'); //debug
-        
+
         /*
         for (var i = 0; i < json["menu"][0]['dinner'].length; i++) { //배열 출력
             console.log(i);
@@ -181,7 +168,7 @@ function handleMessage(sender_psid, received_message) {
         });
         console.log('[종료] 내일의 급식'); //debug
     }
-    
+
     else if (received_message.attachments) {
         // Get the URL of the message attachment
         let attachment_url = received_message.attachments[0].payload.url;
@@ -223,7 +210,7 @@ function handlePostback(sender_psid, received_postback) {
     // Get the payload for the postback
     let payload = received_postback.payload;
     // 오늘의 날짜를 가져옵니다.
-    let today = new Date();   
+    let today = new Date();
 
 
     // Set the response based on the postback payload
@@ -231,8 +218,8 @@ function handlePostback(sender_psid, received_postback) {
         response = { "text": "고마워요!" }
     } else if (payload === 'no') {
         response = { "text": "이런, 못 본척해드릴게요." }
-    } else if (payload == 'FACEBOOK_WELCOME'){
-        response = { "text": "안녕하세요!\n저는 삼고 급식봇입니다!\n최대한 빠르게 오늘의 급식을 알려드리도록 하겠습니다.\n 시작하려면 '오늘의 급식' 혹은 '내일의 급식'을 보내주세요."}
+    } else if (payload == 'FACEBOOK_WELCOME') {
+        response = { "text": "안녕하세요!\n저는 삼고 급식봇입니다!\n최대한 빠르게 오늘의 급식을 알려드리도록 하겠습니다.\n 시작하려면 '오늘의 급식' 혹은 '내일의 급식'을 보내주세요." }
     }
     // Send the message to acknowledge the postback
     callSendAPI(sender_psid, response);

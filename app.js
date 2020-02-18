@@ -1,5 +1,5 @@
 /*
-삼고 급식봇β 2019-12-18 ~ 
+삼고 급식봇 v1.2 2019-12-18 ~ 
 https://developers.facebook.com/docs/messenger-platform
 Facebook Tutorial Guide 참조.
 */
@@ -108,6 +108,7 @@ function handleMessage(sender_psid, received_message) {
         let month =nd.getMonth() + 1;  // 월
         let date = nd.getDate();  // 날짜
         let today_lunch, today_dinner;
+        console.log("[알림] TimeZone 초기화 " + nd);
 
         //급식정보 API 불러오기
         console.log('[함수 선언 완료] 오늘의 급식'); //debug
@@ -117,8 +118,8 @@ function handleMessage(sender_psid, received_message) {
             //console.log(json); // 파싱한 json 로그 출력
             today_lunch = json["menu"][0]['lunch']; // 점심 정보 가져오기
             today_dinner = json["menu"][0]['dinner'] // 저녁 정보 가져오기
-            console.log('[LOG]' + today_lunch);
-            console.log('[LOG]' + today_dinner);
+            console.log('[LOG] 점심' + today_lunch);
+            console.log('[LOG] 저녁' + today_dinner);
             //today_lunch = str(today_lunch);
             //today_lunch = str.replace(/,/g, "\n");
             response = {
@@ -151,6 +152,7 @@ function handleMessage(sender_psid, received_message) {
         let month = nd.getMonth() + 1;  // 월
         let date = nd.getDate();  // 날짜
         let today_lunch, today_dinner;
+        console.log("[알림] TimeZone 초기화 " + nd);
 
         //급식정보 API 불러오기
         console.log('[함수 선언 완료] 내일의 급식'); //debug
@@ -160,8 +162,8 @@ function handleMessage(sender_psid, received_message) {
             //console.log(json); // 파싱한 json 로그 출력
             today_lunch = json["menu"][0]['lunch']; // 점심 정보 가져오기
             today_dinner = json["menu"][0]['dinner'] // 저녁 정보 가져오기
-            console.log('[LOG]' + today_lunch);
-            console.log('[LOG]' + today_dinner);
+            console.log('[LOG] 점심 ' + today_lunch);
+            console.log('[LOG] 저녁 ' + today_dinner);
             response = {
                 "text": `${month}월 ${date}일의 급식 정보입니다.\n\n[점심]\n${today_lunch}\n\n[저녁]\n${today_dinner}`
             }

@@ -97,39 +97,40 @@ function handleMessage(sender_psid, received_message) {
         response = {
             "text": `"${received_message.text}"라고 하셨나요? 아직 저는 '오늘의 급식'과 '내일의 급식'만 이해 할 수 있어요!`,
         };
-    } else if (received_message.text == "오늘의 급식") {
+    } else if (received_message.text == "오늘의 급식") {  // 오늘의 급식 기능
         //오늘 날짜를 가져옵니다.
-        console.log('[시작] 오늘의 급식'); //debug
+        console.log('[시작] 내일의 급식'); //debug
         var json; // json 윗쪽에 변수 선언
         let now_date = new Date(); //wingnim.tistory.com/6
         let offset = +9; // Heroku 서버 위치에 따른 시간대 맞춤
         var utc = now_date.getTime() + (now_date.getTimezoneOffset() * 60000);
         var nd = new Date(utc + (3600000 * offset));
         let year = nd.getFullYear(); // 년도
-        let month =nd.getMonth() + 1;  // 월
-        let date = nd.getDate();  // 날짜
-        let today_lunch, today_dinner;
+        let month = nd.getMonth() + 1;  // 월  TODO 여기 +1이 왜 있을까?
+        let date = nd.getDate(); // 날짜
+        let samgo_breakfast, samgo_lunch, samgo_dinner;
         console.log("[알림] TimeZone 초기화 " + nd);
+        console.log("[알림] 수정된 날짜: " + year.toString() + "-" + month.toString() + "-" + date.toString())
 
         //급식정보 API 불러오기
-        console.log('[함수 선언 완료] 오늘의 급식'); //debug
-        const url = `https://schoolmenukr.ml/api/high/S100000591?date=${date}`;
+        console.log('[함수 선언 완료] 내일의 급식'); //debug
+        const url = `https://schoolmenukr.ml/api/high/S100000591?date=${date}&allergy=hidden`;  // https://github.com/5d-jh/school-menu-api
         request(url, (err, res, body) => {
             json = JSON.parse(body);
             //console.log(json); // 파싱한 json 로그 출력
-            today_lunch = json["menu"][0]['lunch']; // 점심 정보 가져오기
-            today_dinner = json["menu"][0]['dinner'] // 저녁 정보 가져오기
-            console.log('[LOG] 점심' + today_lunch);
-            console.log('[LOG] 저녁' + today_dinner);
-            //today_lunch = str(today_lunch);
-            //today_lunch = str.replace(/,/g, "\n");
+            samgo_breakfast = json["menu"][0]['breakfast']; // 아침 정보 가져오기
+            samgo_lunch = json["menu"][0]['lunch']; // 점심 정보 가져오기
+            samgo_dinner = json["menu"][0]['dinner'] // 저녁 정보 가져오기
+            console.log('[로그] 아침 :' + samgo_breakfast);
+            console.log('[로그] 점심 :' + samgo_lunch);
+            console.log('[로그] 저녁 :' + samgo_dinner);
             response = {
-                "text": `${month}월 ${date}일의 급식 정보입니다.\n\n[점심]\n${today_lunch}\n\n[저녁]\n${today_dinner}`
+                "text": `${month}월 ${date}일의 급식 정보입니다.\n\n[아침]\n${samgo_breakfast} \n\n[점심]\n${samgo_lunch}\n\n[저녁]\n${samgo_dinner}`
             }
             callSendAPI(sender_psid, response);
-            console.log('[END] request');
+            console.log('[알림] 메시지 전송');
         });
-        console.log('[종료] 오늘의 급식'); //debug
+        console.log('[종료] 내일의 급식'); //debug
         //var today_date = json["menu"][0]['date'] // 급식 표에 적힌 날짜 가져오기 //오류 발생
        
         //console.log(today_lunch)
@@ -141,7 +142,7 @@ function handleMessage(sender_psid, received_message) {
             let response = (json["menu"][0]['dinner'][i] + "<br>");
         } */
         //console.log('2-7'); //debug
-    } else if (received_message.text == "내일의 급식") {
+    } else if (received_message.text == "내일의 급식") {  // 내일의 급식 기능
         //오늘 날짜를 가져옵니다.
         console.log('[시작] 내일의 급식'); //debug
         var json; // json 윗쪽에 변수 선언
@@ -150,26 +151,29 @@ function handleMessage(sender_psid, received_message) {
         var utc = now_date.getTime() + (now_date.getTimezoneOffset() * 60000);
         var nd = new Date(utc + (3600000 * offset));
         let year = nd.getFullYear(); // 년도
-        let month = nd.getMonth() + 1;  // 월
-        let date = nd.getDate();  // 날짜
-        let today_lunch, today_dinner;
+        let month = nd.getMonth() + 1;  // 월  TODO 여기 +1이 왜 있을까?
+        let date = nd.getDate() + 1; // 날짜 : 내일의 급식을 위해 1일 추가
+        let samgo_breakfast, samgo_lunch, samgo_dinner;
         console.log("[알림] TimeZone 초기화 " + nd);
+        console.log("[알림] 수정된 날짜: " + year.toString() + "-" + month.toString() + "-" + date.toString())
 
         //급식정보 API 불러오기
         console.log('[함수 선언 완료] 내일의 급식'); //debug
-        const url = `https://schoolmenukr.ml/api/high/S100000591?date=${date}`;
+        const url = `https://schoolmenukr.ml/api/high/S100000591?date=${date}&allergy=hidden`;  // https://github.com/5d-jh/school-menu-api
         request(url, (err, res, body) => {
             json = JSON.parse(body);
             //console.log(json); // 파싱한 json 로그 출력
-            today_lunch = json["menu"][0]['lunch']; // 점심 정보 가져오기
-            today_dinner = json["menu"][0]['dinner'] // 저녁 정보 가져오기
-            console.log('[LOG] 점심 ' + today_lunch);
-            console.log('[LOG] 저녁 ' + today_dinner);
+            samgo_breakfast = json["menu"][0]['breakfast']; // 아침 정보 가져오기
+            samgo_lunch = json["menu"][0]['lunch']; // 점심 정보 가져오기
+            samgo_dinner = json["menu"][0]['dinner'] // 저녁 정보 가져오기
+            console.log('[로그] 아침 :' + samgo_breakfast);
+            console.log('[로그] 점심 :' + samgo_lunch);
+            console.log('[로그] 저녁 :' + samgo_dinner);
             response = {
-                "text": `${month}월 ${date}일의 급식 정보입니다.\n\n[점심]\n${today_lunch}\n\n[저녁]\n${today_dinner}`
+                "text": `${month}월 ${date}일의 급식 정보입니다.\n\n[아침]\n${samgo_breakfast} \n\n[점심]\n${samgo_lunch}\n\n[저녁]\n${samgo_dinner}`
             }
             callSendAPI(sender_psid, response);
-            console.log('[END] request');
+            console.log('[알림] 메시지 전송');
         });
         console.log('[종료] 내일의 급식'); //debug
     }

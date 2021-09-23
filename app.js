@@ -99,7 +99,7 @@ function handleMessage(sender_psid, received_message) {
         };
     } else if (received_message.text == "오늘의 급식") {  // 오늘의 급식 기능
         //오늘 날짜를 가져옵니다.
-        console.log('[시작] 내일의 급식'); //debug
+        console.log('[시작] 오늘의 급식'); //debug
         var json; // json 윗쪽에 변수 선언
         let now_date = new Date(); //wingnim.tistory.com/6
         let offset = +9; // Heroku 서버 위치에 따른 시간대 맞춤
@@ -113,7 +113,7 @@ function handleMessage(sender_psid, received_message) {
         console.log("[알림] 수정된 날짜: " + year.toString() + "-" + month.toString() + "-" + date.toString())
 
         //급식정보 API 불러오기
-        console.log('[함수 선언 완료] 내일의 급식'); //debug
+        console.log('[함수 선언 완료] 오늘의 급식'); //debug
         const url = `https://schoolmenukr.ml/api/high/S100000591?date=${date}&allergy=hidden`;  // https://github.com/5d-jh/school-menu-api
         request(url, (err, res, body) => {
             json = JSON.parse(body);
@@ -130,7 +130,7 @@ function handleMessage(sender_psid, received_message) {
             callSendAPI(sender_psid, response);
             console.log('[알림] 메시지 전송');
         });
-        console.log('[종료] 내일의 급식'); //debug
+        console.log('[종료] 오늘의 급식'); //debug
         //var today_date = json["menu"][0]['date'] // 급식 표에 적힌 날짜 가져오기 //오류 발생
        
         //console.log(today_lunch)

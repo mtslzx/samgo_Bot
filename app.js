@@ -1,5 +1,5 @@
 /*
-삼고 급식봇 v1.2 2019-12-18 ~ 
+삼고 급식봇 v1.3 2019-12-18 ~
 https://developers.facebook.com/docs/messenger-platform
 Facebook Tutorial Guide 참조.
 */
@@ -89,13 +89,14 @@ function handleMessage(sender_psid, received_message) {
     let response;
     console.log('[알림] 메시지 받음');
     // Checks if the message contains text
-    if (received_message.text != "오늘의 급식" && received_message.text != "내일의 급식") {
+    if (received_message.text != "오늘의 급식" && received_message.text != "내일의 급식")
+    {
         // Create the payload for a basic text message, which
         // will be added to the body of our request to the Send API
         console.log('2-2'); //debug
         response = {
             "text": `"${received_message.text}"라고 하셨나요? 아직 저는 '오늘의 급식'과 '내일의 급식'만 이해 할 수 있어요!`,
-        }
+        };
     } else if (received_message.text == "오늘의 급식") {
         //오늘 날짜를 가져옵니다.
         console.log('[시작] 오늘의 급식'); //debug

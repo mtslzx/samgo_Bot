@@ -18,3 +18,6 @@
 - 진행 상황 업데이트
 ### 2.0
 - Persistent Menu 추가
+### 2.8
+- Welcome message 수정
+- 버그 수정

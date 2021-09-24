@@ -259,7 +259,8 @@ function handlePostback(sender_psid, received_postback) {
             response = {
                 "text": `${month}월 ${date}일의 급식 정보입니다.\n\n[아침]\n${samgo_breakfast} \n\n[점심]\n${samgo_lunch}\n\n[저녁]\n${samgo_dinner}`
             }
-        });
+            callSendAPI(sender_psid, response);
+        })
         console.log('[종료] 오늘의 급식'); //debug
     } else if (payload == "tomorrow") {  // 내일의 급식 고정 메뉴 호출 시
         //오늘 날짜를 가져옵니다.
@@ -291,6 +292,7 @@ function handlePostback(sender_psid, received_postback) {
             response = {
                 "text": `${month}월 ${date}일의 급식 정보입니다.\n\n[아침]\n${samgo_breakfast} \n\n[점심]\n${samgo_lunch}\n\n[저녁]\n${samgo_dinner}`
             }
+            callSendAPI(sender_psid, response);
         })
         console.log('[종료] 내일의 급식'); //debug
     } else if (payload == "week") {

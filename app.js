@@ -238,11 +238,11 @@ function handlePostback(sender_psid, received_postback) {
         setTimeout(function () {
             response = {"text": '쉽고 빠르게 오늘의 급식을 알려드리도록 하겠습니다.'}
             callSendAPI(sender_psid, response);
-        }, 300);
+        }, 500);
         setTimeout(function () {
             response = {"text": '시작하려면 오른쪽 아래의 ☰ 버튼을 누르거나 "오늘의 급식" 혹은 "내일의 급식"을 보내주세요.'}
             callSendAPI(sender_psid, response);
-        }, 500);
+        }, 1000);
         console.log('[알림] Welcome 메시지 전송');
     } else if (payload == "week") {
         response = "아직 개발중이에요!"

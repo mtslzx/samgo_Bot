@@ -62,7 +62,9 @@ console.log("" == msgchk_list) // true
 조식기능 추가
 내일 급식 시간 수정
 TODO 주간 급식 추가
-TODO 버튼 추가
+TODO 급식 없는날 예외 추가
+버튼 추가
+TODO 자연어 처리 (대화) 추가? w. https://developers.facebook.com/docs/messenger-platform/send-messages/personas and  firebase
 
 원래 문맥에서 급식이라는 단어와
 내일 오늘 이걸 뽑아내려고 했는데

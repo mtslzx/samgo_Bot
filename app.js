@@ -1,5 +1,5 @@
 /*
-삼고 급식봇 v1.3 2019-12-18 ~
+삼고 급식봇 v2.8 2019-12-18 ~
 https://developers.facebook.com/docs/messenger-platform
 Facebook Tutorial Guide 참조.
 */

@@ -226,19 +226,23 @@ function handlePostback(sender_psid, received_postback) {
 
 
     // Set the response based on the postback payload
-    if (payload === 'yes') {  // 이미지 답장 deprecated
-        response = {"text": ""}
-    } else if (payload === 'no') {  // 이미지 답장 deprecated
+    if (payload === 'yes' || payload === 'no') {  // 이미지 답장 deprecated
         response = {"text": ""}
     } else if (payload == 'FACEBOOK_WELCOME') {  // 메신저 최초 접속 시
         response = {"text": '안녕하세요!'}
         callSendAPI(sender_psid, response);
         response = {"text": '저는 삼천포고등학교 급식봇입니다!'}
-        callSendAPI(sender_psid, response);
+        setTimeout(function () {
+            callSendAPI(sender_psid, response);
+        }, 200);
         response = {"text": '쉽고 빠르게 오늘의 급식을 알려드리도록 하겠습니다.'}
-        callSendAPI(sender_psid, response);
+        setTimeout(function () {
+            callSendAPI(sender_psid, response);
+        }, 300);
         response = {"text": '시작하려면 오른쪽 아래의 ☰ 버튼을 누르거나 "오늘의 급식" 혹은 "내일의 급식"을 보내주세요.'}
-        callSendAPI(sender_psid, response);
+        setTimeout(function () {
+            callSendAPI(sender_psid, response);
+        }, 500);
         console.log('[알림] Welcome 메시지 전송');
     } else if (payload == "week") {
         response = "아직 개발중이에요!"

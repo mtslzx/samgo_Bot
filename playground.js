@@ -2,12 +2,12 @@ const request = require("request");
 console.log('[시작] 내일의 급식'); //debug
 var json; // json 윗쪽에 변수 선언
 let now_date = new Date(); //wingnim.tistory.com/6
-let offset = +9; // Heroku 서버 위치에 따른 시간대 맞춤
+let offset = + 9; // Heroku 서버 위치에 따른 시간대 맞춤
 var utc = now_date.getTime() + (now_date.getTimezoneOffset() * 60000);
 var nd = new Date(utc + (3600000 * offset));
 let year = nd.getFullYear(); // 년도
-let month = nd.getMonth() + 1;  // 월  TODO 여기 +1이 왜 있을까?
-let date = nd.getDate() + 1; // 날짜 : 내일의 급식을 위해 1일 추가
+let month = nd.getMonth() + 1;  // 월  여기 +1이 왜 있을까?
+let date = nd.getDate() + 0; // 날짜 : 내일의 급식을 위해 1일 추가
 console.log("[알림] TimeZone 초기화 " + nd);
 console.log("[알림] 수정된 날짜: " + year.toString() + "-" + month.toString() + "-" + date.toString())
 
@@ -40,7 +40,7 @@ let offset = +9; // Heroku 서버 위치에 따른 시간대 맞춤
 var utc = now_date.getTime() + (now_date.getTimezoneOffset() * 60000);
 var nd = new Date(utc + (3600000 * offset));
 let year = nd.getFullYear(); // 년도
-let month = nd.getMonth() + 1;  // 월  TODO 여기 +1이 왜 있을까?
+let month = nd.getMonth() + 1;  // 월  여기 +1이 왜 있을까?
 let date = nd.getDate() + 1; // 날짜 : 내일의 급식을 위해 1일 추가
 console.log("[알림] TimeZone 초기화 " + nd);
 console.log("[알림] 수정된 날짜: " + year.toString() + "-" + month.toString() + "-" + date.toString())
@@ -59,8 +59,8 @@ console.log("" == msgchk_list) // true
 
 
 /*
-TODO 조식기능 추가
-TODO 내일 급식 시간 수정
+조식기능 추가
+내일 급식 시간 수정
 TODO 주간 급식 추가
 TODO 버튼 추가
 
@@ -69,4 +69,5 @@ TODO 버튼 추가
 버튼만들면 딱히 필없을듯
 
  */
+
 

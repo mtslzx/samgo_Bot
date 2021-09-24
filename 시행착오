@@ -81,3 +81,70 @@ json["menu"][0] 을 하니까 그냥 menu 치는거랑 똑같이 나오는줄 �
   '깻잎겉절이5.6.13.18.'
 ]
 만 불러와짐 ^^7
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Persistent 메뉴 추가.
+
+
+
+curl 잘 안되서 크롬 확장프로그램 "Advanced REST Client" 사용함.
+https://stackoverflow.com/questions/36803859/facebook-messenger-bot-welcome-message-100-the-parameter-setting-type-is-requir
+
+URL : https://graph.facebook.com/v2.6/me/messenger_profile?access_token=<페이지 엑세스 토큰>
+Header : Content-type:application/json
+Body :
+{
+  "persistent_menu": [
+    {
+      "locale": "default",
+      "composer_input_disabled": false,
+      "call_to_actions": [
+        {
+          "type": "postback",
+          "title": "오늘의 급식",
+          "payload": "today"
+        },
+        {
+          "type": "postback",
+          "title": "내일의 급식",
+          "payload": "tomorrow"
+        },
+        {
+          "type": "postback",
+          "title": "이번 주 급식",
+          "payload": "week"
+        },
+        {
+          "type": "web_url",
+          "title": "삼천포고등학교 홈페이지",
+          "url": "http://samcheonpo-h.gne.go.kr/",
+          "webview_height_ratio": "tall"
+        }
+      ]
+    }
+  ]
+}
+
+이렇게 하면 200 success 뜸
+
+https://developers.facebook.com/docs/messenger-platform/send-messages/persistent-menu
+
+
+
+
+
+

@@ -106,7 +106,7 @@ function handleMessage(sender_psid, received_message) {
         var utc = now_date.getTime() + (now_date.getTimezoneOffset() * 60000);
         var nd = new Date(utc + (3600000 * offset));
         let year = nd.getFullYear(); // 년도
-        let month = nd.getMonth() + 1;  // 월  TODO 여기 +1이 왜 있을까?
+        let month = nd.getMonth() + 1;  // 월  여기 +1이 왜 있을까?
         let date = nd.getDate(); // 날짜
         let samgo_breakfast, samgo_lunch, samgo_dinner;
         console.log("[알림] TimeZone 초기화 " + nd);
@@ -151,7 +151,7 @@ function handleMessage(sender_psid, received_message) {
         var utc = now_date.getTime() + (now_date.getTimezoneOffset() * 60000);
         var nd = new Date(utc + (3600000 * offset));
         let year = nd.getFullYear(); // 년도
-        let month = nd.getMonth() + 1;  // 월  TODO 여기 +1이 왜 있을까?
+        let month = nd.getMonth() + 1;  // 월  여기 +1이 왜 있을까?
         let date = nd.getDate() + 1; // 날짜 : 내일의 급식을 위해 1일 추가
         let samgo_breakfast, samgo_lunch, samgo_dinner;
         console.log("[알림] TimeZone 초기화 " + nd);
@@ -234,6 +234,8 @@ function handlePostback(sender_psid, received_postback) {
     callSendAPI(sender_psid, response);
 }
 console.log('[초기화] HandlePostback 완료!');
+
+
 
 function callSendAPI(sender_psid, response) {
     // Construct the message body

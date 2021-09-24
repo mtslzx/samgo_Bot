@@ -209,139 +209,139 @@ function handleMessage(sender_psid, received_message) {
 
     // Send the response message
     callSendAPI(sender_psid, response);
-}
+
 이미지 인식 deprecated
 급식 사진 올리기 및 평가 등 관련 기능 추가시 사용예정
      */
     console.log('[초기화] handleMessage 완료!');
-
-    function handlePostback(sender_psid, received_postback) {
-        console.log('ok')
-        let response;
-        // Get the payload for the postback
-        let payload = received_postback.payload;
-        // 오늘의 날짜를 가져옵니다.
-        let today = new Date();
-
-
-        // Set the response based on the postback payload
-        if (payload === 'yes') {  // 이미지 답장 deprecated
-            response = {"text": ""}
-        } else if (payload === 'no') {  // 이미지 답장 deprecated
-            response = {"text": ""}
-        } else if (payload == 'FACEBOOK_WELCOME') {  // 메신저 최초 접속 시
-            response = {"text": '안녕하세요!\n저는 삼천포고등학교 급식봇입니다!\n오늘의 급식을 알려드리도록 하겠습니다.\n 시작하려면 오른쪽 아래의 ☰ 버튼을 누르거나 "오늘의 급식" 혹은 "내일의 급식"을 보내주세요.'}
-            callSendAPI(sender_psid, response);
-            console.log('[알림] Welcome 메시지 전송');
-        } else if (payload == "week") {
-            response = "아직 개발중이에요!"
-            callSendAPI(sender_psid, response);
-            console.log('[알림] Week 메시지 전송');
-        } else if (payload == "today") {  // 오늘의 급식 고정 메뉴 호출 시
-            //오늘 날짜를 가져옵니다.
-            console.log('[시작] 오늘의 급식'); //debug
-            var json; // json 윗쪽에 변수 선언
-            let now_date = new Date(); //wingnim.tistory.com/6
-            let offset = +9; // Heroku 서버 위치에 따른 시간대 맞춤
-            var utc = now_date.getTime() + (now_date.getTimezoneOffset() * 60000);
-            var nd = new Date(utc + (3600000 * offset));
-            let year = nd.getFullYear(); // 년도
-            let month = nd.getMonth() + 1;  // 월  여기 +1이 왜 있을까?
-            let date = nd.getDate(); // 날짜
-            let samgo_breakfast, samgo_lunch, samgo_dinner;
-            console.log("[알림] TimeZone 초기화 " + nd);
-            console.log("[알림] 수정된 날짜: " + year.toString() + "-" + month.toString() + "-" + date.toString())
-
-            //급식정보 API 불러오기
-            console.log('[함수 선언 완료] 오늘의 급식'); //debug
-            const url = `https://schoolmenukr.ml/api/high/S100000591?date=${date}&allergy=hidden`;  // https://github.com/5d-jh/school-menu-api
-            request(url, (err, res, body) => {
-                json = JSON.parse(body);
-                //console.log(json); // 파싱한 json 로그 출력
-                samgo_breakfast = json["menu"][0]['breakfast']; // 아침 정보 가져오기
-                samgo_lunch = json["menu"][0]['lunch']; // 점심 정보 가져오기
-                samgo_dinner = json["menu"][0]['dinner'] // 저녁 정보 가져오기
-                console.log('[로그] 아침 :' + samgo_breakfast);
-                console.log('[로그] 점심 :' + samgo_lunch);
-                console.log('[로그] 저녁 :' + samgo_dinner);
-                response = {
-                    "text": `${month}월 ${date}일의 급식 정보입니다.\n\n[아침]\n${samgo_breakfast} \n\n[점심]\n${samgo_lunch}\n\n[저녁]\n${samgo_dinner}`
-                }
-                callSendAPI(sender_psid, response);
-            })
-            console.log('[종료] 오늘의 급식'); //debug
-        } else if (payload == "tomorrow") {  // 내일의 급식 고정 메뉴 호출 시
-            //오늘 날짜를 가져옵니다.
-            console.log('[시작] 내일의 급식'); //debug
-            var json; // json 윗쪽에 변수 선언
-            let now_date = new Date(); //wingnim.tistory.com/6
-            let offset = +9; // Heroku 서버 위치에 따른 시간대 맞춤
-            var utc = now_date.getTime() + (now_date.getTimezoneOffset() * 60000);
-            var nd = new Date(utc + (3600000 * offset));
-            let year = nd.getFullYear(); // 년도
-            let month = nd.getMonth() + 1;  // 월  여기 +1이 왜 있을까?
-            let date = nd.getDate() + 1; // 날짜 : 내일의 급식을 위해 1일 추가
-            let samgo_breakfast, samgo_lunch, samgo_dinner;
-            console.log("[알림] TimeZone 초기화 " + nd);
-            console.log("[알림] 수정된 날짜: " + year.toString() + "-" + month.toString() + "-" + date.toString())
-
-            //급식정보 API 불러오기
-            console.log('[함수 선언 완료] 내일의 급식'); //debug
-            const url = `https://schoolmenukr.ml/api/high/S100000591?date=${date}&allergy=hidden`;  // https://github.com/5d-jh/school-menu-api
-            request(url, (err, res, body) => {
-                json = JSON.parse(body);
-                //console.log(json); // 파싱한 json 로그 출력
-                samgo_breakfast = json["menu"][0]['breakfast']; // 아침 정보 가져오기
-                samgo_lunch = json["menu"][0]['lunch']; // 점심 정보 가져오기
-                samgo_dinner = json["menu"][0]['dinner'] // 저녁 정보 가져오기
-                console.log('[로그] 아침 :' + samgo_breakfast);
-                console.log('[로그] 점심 :' + samgo_lunch);
-                console.log('[로그] 저녁 :' + samgo_dinner);
-                response = {
-                    "text": `${month}월 ${date}일의 급식 정보입니다.\n\n[아침]\n${samgo_breakfast} \n\n[점심]\n${samgo_lunch}\n\n[저녁]\n${samgo_dinner}`
-                }
-                callSendAPI(sender_psid, response);
-            })
-            console.log('[종료] 내일의 급식'); //debug
-        }
-        // Send the message to acknowledge the postback
-        callSendAPI(sender_psid, response);
-        console.log('[알림] handlePostback 메시지 전송');
-    }
-
-    /*
-    코드 실행 순서가 어떻게 되는건지 모르겠다
-    원래 callSendAPI가 마지막에서 보내주는거였는데
-    저 코드 넣은뒤로는 뭔가 꼬인듯함. 그래서 if 케이스마다 callSendAPI 추가함.
-     */
-    console.log('[초기화] handlePostback 완료!');
-
-
-    function callSendAPI(sender_psid, response) {
-        // Construct the message body
-        let request_body = {
-            "recipient": {
-                "id": sender_psid
-            },
-            "message": response
-        }
-
-        // Send the HTTP request to the Messenger Platform
-        request({
-            "uri": "https://graph.facebook.com/v2.6/me/messages",
-            "qs": {"access_token": PAGE_ACCESS_TOKEN},
-            "method": "POST",
-            "json": request_body
-        }, (err, res, body) => {
-            if (!err) {
-                console.log('message sent!')
-            } else {
-                console.error("Unable to send message:" + err);
-            }
-        });
-    }
-
-    console.log('[초기화] CallSendAPI 완료!');
-    console.log('[초기화] 완료!');
 }
+
+function handlePostback(sender_psid, received_postback) {
+    console.log('ok')
+    let response;
+    // Get the payload for the postback
+    let payload = received_postback.payload;
+    // 오늘의 날짜를 가져옵니다.
+    let today = new Date();
+
+
+    // Set the response based on the postback payload
+    if (payload === 'yes') {  // 이미지 답장 deprecated
+        response = {"text": ""}
+    } else if (payload === 'no') {  // 이미지 답장 deprecated
+        response = {"text": ""}
+    } else if (payload == 'FACEBOOK_WELCOME') {  // 메신저 최초 접속 시
+        response = {"text": '안녕하세요!\n저는 삼천포고등학교 급식봇입니다!\n오늘의 급식을 알려드리도록 하겠습니다.\n 시작하려면 오른쪽 아래의 ☰ 버튼을 누르거나 "오늘의 급식" 혹은 "내일의 급식"을 보내주세요.'}
+        callSendAPI(sender_psid, response);
+        console.log('[알림] Welcome 메시지 전송');
+    } else if (payload == "week") {
+        response = "아직 개발중이에요!"
+        callSendAPI(sender_psid, response);
+        console.log('[알림] Week 메시지 전송');
+    } else if (payload == "today") {  // 오늘의 급식 고정 메뉴 호출 시
+        //오늘 날짜를 가져옵니다.
+        console.log('[시작] 오늘의 급식'); //debug
+        var json; // json 윗쪽에 변수 선언
+        let now_date = new Date(); //wingnim.tistory.com/6
+        let offset = +9; // Heroku 서버 위치에 따른 시간대 맞춤
+        var utc = now_date.getTime() + (now_date.getTimezoneOffset() * 60000);
+        var nd = new Date(utc + (3600000 * offset));
+        let year = nd.getFullYear(); // 년도
+        let month = nd.getMonth() + 1;  // 월  여기 +1이 왜 있을까?
+        let date = nd.getDate(); // 날짜
+        let samgo_breakfast, samgo_lunch, samgo_dinner;
+        console.log("[알림] TimeZone 초기화 " + nd);
+        console.log("[알림] 수정된 날짜: " + year.toString() + "-" + month.toString() + "-" + date.toString())
+
+        //급식정보 API 불러오기
+        console.log('[함수 선언 완료] 오늘의 급식'); //debug
+        const url = `https://schoolmenukr.ml/api/high/S100000591?date=${date}&allergy=hidden`;  // https://github.com/5d-jh/school-menu-api
+        request(url, (err, res, body) => {
+            json = JSON.parse(body);
+            //console.log(json); // 파싱한 json 로그 출력
+            samgo_breakfast = json["menu"][0]['breakfast']; // 아침 정보 가져오기
+            samgo_lunch = json["menu"][0]['lunch']; // 점심 정보 가져오기
+            samgo_dinner = json["menu"][0]['dinner'] // 저녁 정보 가져오기
+            console.log('[로그] 아침 :' + samgo_breakfast);
+            console.log('[로그] 점심 :' + samgo_lunch);
+            console.log('[로그] 저녁 :' + samgo_dinner);
+            response = {
+                "text": `${month}월 ${date}일의 급식 정보입니다.\n\n[아침]\n${samgo_breakfast} \n\n[점심]\n${samgo_lunch}\n\n[저녁]\n${samgo_dinner}`
+            }
+            callSendAPI(sender_psid, response);
+        });
+        console.log('[종료] 오늘의 급식'); //debug
+    } else if (payload == "tomorrow") {  // 내일의 급식 고정 메뉴 호출 시
+        //오늘 날짜를 가져옵니다.
+        console.log('[시작] 내일의 급식'); //debug
+        var json; // json 윗쪽에 변수 선언
+        let now_date = new Date(); //wingnim.tistory.com/6
+        let offset = +9; // Heroku 서버 위치에 따른 시간대 맞춤
+        var utc = now_date.getTime() + (now_date.getTimezoneOffset() * 60000);
+        var nd = new Date(utc + (3600000 * offset));
+        let year = nd.getFullYear(); // 년도
+        let month = nd.getMonth() + 1;  // 월  여기 +1이 왜 있을까?
+        let date = nd.getDate() + 1; // 날짜 : 내일의 급식을 위해 1일 추가
+        let samgo_breakfast, samgo_lunch, samgo_dinner;
+        console.log("[알림] TimeZone 초기화 " + nd);
+        console.log("[알림] 수정된 날짜: " + year.toString() + "-" + month.toString() + "-" + date.toString())
+
+        //급식정보 API 불러오기
+        console.log('[함수 선언 완료] 내일의 급식'); //debug
+        const url = `https://schoolmenukr.ml/api/high/S100000591?date=${date}&allergy=hidden`;  // https://github.com/5d-jh/school-menu-api
+        request(url, (err, res, body) => {
+            json = JSON.parse(body);
+            //console.log(json); // 파싱한 json 로그 출력
+            samgo_breakfast = json["menu"][0]['breakfast']; // 아침 정보 가져오기
+            samgo_lunch = json["menu"][0]['lunch']; // 점심 정보 가져오기
+            samgo_dinner = json["menu"][0]['dinner'] // 저녁 정보 가져오기
+            console.log('[로그] 아침 :' + samgo_breakfast);
+            console.log('[로그] 점심 :' + samgo_lunch);
+            console.log('[로그] 저녁 :' + samgo_dinner);
+            response = {
+                "text": `${month}월 ${date}일의 급식 정보입니다.\n\n[아침]\n${samgo_breakfast} \n\n[점심]\n${samgo_lunch}\n\n[저녁]\n${samgo_dinner}`
+            }
+            callSendAPI(sender_psid, response);
+        });
+        console.log('[종료] 내일의 급식'); //debug
+    }
+    // Send the message to acknowledge the postback
+    callSendAPI(sender_psid, response);
+    console.log('[알림] handlePostback 메시지 전송');
+}
+/*
+코드 실행 순서가 어떻게 되는건지 모르겠다
+원래 callSendAPI가 마지막에서 보내주는거였는데
+저 코드 넣은뒤로는 뭔가 꼬인듯함. 그래서 if 케이스마다 callSendAPI 추가함.
+ */
+console.log('[초기화] handlePostback 완료!');
+
+
+
+function callSendAPI(sender_psid, response) {
+    // Construct the message body
+    let request_body = {
+        "recipient": {
+            "id": sender_psid
+        },
+        "message": response
+    }
+
+    // Send the HTTP request to the Messenger Platform
+    request({
+        "uri": "https://graph.facebook.com/v2.6/me/messages",
+        "qs": { "access_token": PAGE_ACCESS_TOKEN },
+        "method": "POST",
+        "json": request_body
+    }, (err, res, body) => {
+        if (!err) {
+            console.log('message sent!')
+        } else {
+            console.error("Unable to send message:" + err);
+        }
+    });
+}
+console.log('[초기화] CallSendAPI 완료!');
+console.log('[초기화] 완료!');
+
 

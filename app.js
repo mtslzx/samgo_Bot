@@ -177,7 +177,7 @@ function handleMessage(sender_psid, received_message) {
         });
         console.log('[종료] 내일의 급식'); //debug
     }
-    
+    /*
     else if (received_message.attachments) {
         // Get the URL of the message attachment
         let attachment_url = received_message.attachments[0].payload.url;
@@ -187,18 +187,18 @@ function handleMessage(sender_psid, received_message) {
                 "payload": {
                     "template_type": "generic",
                     "elements": [{
-                        "title": "이 사진은 무엇인가요?",
+                        "title": "?",
                         //"subtitle": "Tap a button to answer.",
                         "image_url": attachment_url,
                         "buttons": [
                             {
                                 "type": "postback",
-                                "title": "그냥 가져!",
+                                "title": "",
                                 "payload": "yes",
                             },
                             {
                                 "type": "postback",
-                                "title": "잘못 올렸어!",
+                                "title": "",
                                 "payload": "no",
                             }
                         ],
@@ -211,6 +211,9 @@ function handleMessage(sender_psid, received_message) {
     // Send the response message
     callSendAPI(sender_psid, response);
 }
+이미지 인식 deprecated
+급식 사진 올리기 및 평가 등 관련 기능 추가시 사용예정
+     */
 console.log('[초기화] handleMessage 완료!');
 
 function handlePostback(sender_psid, received_postback) {
@@ -229,6 +232,8 @@ function handlePostback(sender_psid, received_postback) {
         response = {"text": ""}
     } else if (payload == 'FACEBOOK_WELCOME') {  // 메신저 최초 접속 시
         response = {"text": "안녕하세요!\n저는 삼고 급식봇입니다!\n최대한 빠르게 오늘의 급식을 알려드리도록 하겠습니다.\n 시작하려면 '오늘의 급식' 혹은 '내일의 급식'을 보내주세요."}
+    } else if (payload == "week") {
+        response = "아직 개발중이에요!"
     } else if (payload == "today") {  // 오늘의 급식 고정 메뉴 호출 시
         //오늘 날짜를 가져옵니다.
         console.log('[시작] 오늘의 급식'); //debug
@@ -295,14 +300,14 @@ function handlePostback(sender_psid, received_postback) {
             callSendAPI(sender_psid, response);
         })
         console.log('[종료] 내일의 급식'); //debug
-    } else if (payload == "week") {
-        response = "아직 개발중이에요!"
     }
     // Send the message to acknowledge the postback
     callSendAPI(sender_psid, response);
-    console.log('[알림] 메시지 전송');
+    console.log('[알림] handlePostback 메시지 전송');
 }
-
+/*
+코드 실행 순서가 어떻게 되는건지 모르겠다
+ */
 
 
 console.log('[초기화] handlePostback 완료!');

@@ -107,12 +107,13 @@ function handleMessage(sender_psid, received_message) {
         let year = nd.getFullYear(); // 년도
         let month = nd.getMonth() + 1;  // 월  여기 +1이 왜 있을까?
         let date = nd.getDate(); // 날짜
+        const WEEKDAY = ['일', '월', '화', '수', '목', '금', '토'];  // https://mizzo-dev.tistory.com/entry/JavaScript%EB%82%A0%EC%A7%9C-Date-%ED%99%9C%EC%9A%A9%ED%95%B4%EC%84%9C-%EC%9A%94%EC%9D%BC-%EA%B5%AC%ED%95%98%EA%B8%B0
+        let week = WEEKDAY[nd.getDay()];  // 요일 찾기
         let samgo_breakfast, samgo_lunch, samgo_dinner;
+
         console.log("[알림] TimeZone 초기화 " + nd);
         console.log("[알림] 수정된 날짜: " + year.toString() + "-" + month.toString() + "-" + date.toString())
 
-        //급식정보 API 불러오기
-        console.log('[함수 선언 완료] 오늘의 급식'); //debug
         const url = `https://schoolmenukr.ml/api/high/S100000591?date=${date}&allergy=hidden`;  // https://github.com/5d-jh/school-menu-api
         request(url, (err, res, body) => {
             json = JSON.parse(body);
@@ -123,8 +124,14 @@ function handleMessage(sender_psid, received_message) {
             console.log('[로그] 아침 :' + samgo_breakfast);
             console.log('[로그] 점심 :' + samgo_lunch);
             console.log('[로그] 저녁 :' + samgo_dinner);
-            response = {
-                "text": `${month}월 ${date}일의 급식 정보입니다.\n\n[아침]\n${samgo_breakfast} \n\n[점심]\n${samgo_lunch}\n\n[저녁]\n${samgo_dinner}`
+            if (samgo_breakfast == "" && samgo_lunch == "" && samgo_dinner == "") {  // 예외 추가. - 급식이 없는 날
+                response = {
+                    "text": `${month}월 ${date}일(${week})의 급식 정보가 존재하지 않습니다.`
+                }
+            } else {
+                response = {
+                    "text": `${month}월 ${date}일(${week})의 급식 정보입니다.\n\n[아침]\n${samgo_breakfast} \n\n[점심]\n${samgo_lunch}\n\n[저녁]\n${samgo_dinner}`
+                }
             }
             callSendAPI(sender_psid, response);
             console.log('[알림] 메시지 전송');
@@ -151,13 +158,14 @@ function handleMessage(sender_psid, received_message) {
         var nd = new Date(utc + (3600000 * offset));
         let year = nd.getFullYear(); // 년도
         let month = nd.getMonth() + 1;  // 월  여기 +1이 왜 있을까?
-        let date = nd.getDate() + 1; // 날짜 : 내일의 급식을 위해 1일 추가
+        let date = nd.getDate(); // 날짜
+        const WEEKDAY = ['일', '월', '화', '수', '목', '금', '토'];  // https://mizzo-dev.tistory.com/entry/JavaScript%EB%82%A0%EC%A7%9C-Date-%ED%99%9C%EC%9A%A9%ED%95%B4%EC%84%9C-%EC%9A%94%EC%9D%BC-%EA%B5%AC%ED%95%98%EA%B8%B0
+        let week = WEEKDAY[nd.getDay()];  // 요일 찾기
         let samgo_breakfast, samgo_lunch, samgo_dinner;
+
         console.log("[알림] TimeZone 초기화 " + nd);
         console.log("[알림] 수정된 날짜: " + year.toString() + "-" + month.toString() + "-" + date.toString())
 
-        //급식정보 API 불러오기
-        console.log('[함수 선언 완료] 내일의 급식'); //debug
         const url = `https://schoolmenukr.ml/api/high/S100000591?date=${date}&allergy=hidden`;  // https://github.com/5d-jh/school-menu-api
         request(url, (err, res, body) => {
             json = JSON.parse(body);
@@ -168,8 +176,14 @@ function handleMessage(sender_psid, received_message) {
             console.log('[로그] 아침 :' + samgo_breakfast);
             console.log('[로그] 점심 :' + samgo_lunch);
             console.log('[로그] 저녁 :' + samgo_dinner);
-            response = {
-                "text": `${month}월 ${date}일의 급식 정보입니다.\n\n[아침]\n${samgo_breakfast} \n\n[점심]\n${samgo_lunch}\n\n[저녁]\n${samgo_dinner}`
+            if (samgo_breakfast == "" && samgo_lunch == "" && samgo_dinner == "") {  // 예외 추가. - 급식이 없는 날
+                response = {
+                    "text": `${month}월 ${date}일(${week})의 급식 정보가 존재하지 않습니다.`
+                }
+            } else {
+                response = {
+                    "text": `${month}월 ${date}일(${week})의 급식 정보입니다.\n\n[아침]\n${samgo_breakfast} \n\n[점심]\n${samgo_lunch}\n\n[저녁]\n${samgo_dinner}`
+                }
             }
             callSendAPI(sender_psid, response);
             console.log('[알림] 메시지 전송');
@@ -231,7 +245,7 @@ function handlePostback(sender_psid, received_postback) {
     } else if (payload == 'FACEBOOK_WELCOME') {  // 메신저 최초 접속 시
         response = {"text": '안녕하세요!'}
         callSendAPI(sender_psid, response);
-        setTimeout(function () {
+        setTimeout(function () {  // 현실감을 위해 딜레이 추가
             response = {"text": '저는 삼천포고등학교 급식봇입니다!'}
             callSendAPI(sender_psid, response);
         }, 200);
@@ -259,12 +273,13 @@ function handlePostback(sender_psid, received_postback) {
         let year = nd.getFullYear(); // 년도
         let month = nd.getMonth() + 1;  // 월  여기 +1이 왜 있을까?
         let date = nd.getDate(); // 날짜
+        const WEEKDAY = ['일', '월', '화', '수', '목', '금', '토'];  // https://mizzo-dev.tistory.com/entry/JavaScript%EB%82%A0%EC%A7%9C-Date-%ED%99%9C%EC%9A%A9%ED%95%B4%EC%84%9C-%EC%9A%94%EC%9D%BC-%EA%B5%AC%ED%95%98%EA%B8%B0
+        let week = WEEKDAY[nd.getDay()];  // 요일 찾기
         let samgo_breakfast, samgo_lunch, samgo_dinner;
+
         console.log("[알림] TimeZone 초기화 " + nd);
         console.log("[알림] 수정된 날짜: " + year.toString() + "-" + month.toString() + "-" + date.toString())
 
-        //급식정보 API 불러오기
-        console.log('[함수 선언 완료] 오늘의 급식'); //debug
         const url = `https://schoolmenukr.ml/api/high/S100000591?date=${date}&allergy=hidden`;  // https://github.com/5d-jh/school-menu-api
         request(url, (err, res, body) => {
             json = JSON.parse(body);
@@ -275,10 +290,17 @@ function handlePostback(sender_psid, received_postback) {
             console.log('[로그] 아침 :' + samgo_breakfast);
             console.log('[로그] 점심 :' + samgo_lunch);
             console.log('[로그] 저녁 :' + samgo_dinner);
-            response = {
-                "text": `${month}월 ${date}일의 급식 정보입니다.\n\n[아침]\n${samgo_breakfast} \n\n[점심]\n${samgo_lunch}\n\n[저녁]\n${samgo_dinner}`
+            if (samgo_breakfast == "" && samgo_lunch == "" && samgo_dinner == "") {  // 예외 추가. - 급식이 없는 날
+                response = {
+                    "text": `${month}월 ${date}일(${week})의 급식 정보가 존재하지 않습니다.`
+                }
+            } else {
+                response = {
+                    "text": `${month}월 ${date}일(${week})의 급식 정보입니다.\n\n[아침]\n${samgo_breakfast} \n\n[점심]\n${samgo_lunch}\n\n[저녁]\n${samgo_dinner}`
+                }
             }
             callSendAPI(sender_psid, response);
+            console.log('[알림] 메시지 전송');
         });
         console.log('[종료] 오늘의 급식'); //debug
     } else if (payload == "tomorrow") {  // 내일의 급식 고정 메뉴 호출 시
@@ -291,13 +313,14 @@ function handlePostback(sender_psid, received_postback) {
         var nd = new Date(utc + (3600000 * offset));
         let year = nd.getFullYear(); // 년도
         let month = nd.getMonth() + 1;  // 월  여기 +1이 왜 있을까?
-        let date = nd.getDate() + 1; // 날짜 : 내일의 급식을 위해 1일 추가
+        let date = nd.getDate(); // 날짜
+        const WEEKDAY = ['일', '월', '화', '수', '목', '금', '토'];  // https://mizzo-dev.tistory.com/entry/JavaScript%EB%82%A0%EC%A7%9C-Date-%ED%99%9C%EC%9A%A9%ED%95%B4%EC%84%9C-%EC%9A%94%EC%9D%BC-%EA%B5%AC%ED%95%98%EA%B8%B0
+        let week = WEEKDAY[nd.getDay()];  // 요일 찾기
         let samgo_breakfast, samgo_lunch, samgo_dinner;
+
         console.log("[알림] TimeZone 초기화 " + nd);
         console.log("[알림] 수정된 날짜: " + year.toString() + "-" + month.toString() + "-" + date.toString())
 
-        //급식정보 API 불러오기
-        console.log('[함수 선언 완료] 내일의 급식'); //debug
         const url = `https://schoolmenukr.ml/api/high/S100000591?date=${date}&allergy=hidden`;  // https://github.com/5d-jh/school-menu-api
         request(url, (err, res, body) => {
             json = JSON.parse(body);
@@ -308,10 +331,17 @@ function handlePostback(sender_psid, received_postback) {
             console.log('[로그] 아침 :' + samgo_breakfast);
             console.log('[로그] 점심 :' + samgo_lunch);
             console.log('[로그] 저녁 :' + samgo_dinner);
-            response = {
-                "text": `${month}월 ${date}일의 급식 정보입니다.\n\n[아침]\n${samgo_breakfast} \n\n[점심]\n${samgo_lunch}\n\n[저녁]\n${samgo_dinner}`
+            if (samgo_breakfast == "" && samgo_lunch == "" && samgo_dinner == "") {  // 예외 추가. - 급식이 없는 날
+                response = {
+                    "text": `${month}월 ${date}일(${week})의 급식 정보가 존재하지 않습니다.`
+                }
+            } else {
+                response = {
+                    "text": `${month}월 ${date}일(${week})의 급식 정보입니다.\n\n[아침]\n${samgo_breakfast} \n\n[점심]\n${samgo_lunch}\n\n[저녁]\n${samgo_dinner}`
+                }
             }
             callSendAPI(sender_psid, response);
+            console.log('[알림] 메시지 전송');
         });
         console.log('[종료] 내일의 급식'); //debug
     }

@@ -350,9 +350,10 @@ function handlePostback(sender_psid, received_postback) {
                 startday++;  // 월요일 startday 날짜 증가. 월 -> 금까지.
             }
             if (exception1 == true) {
+                callSendAPI(responssse)
                 console.log(`[예외] 종료`);
             } else if (exception1 == false) {
-                console.log(responssse);
+                callSendAPI(responssse)
                 console.log(`[정상] 종료`);
             }
         });

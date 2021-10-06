@@ -304,7 +304,7 @@ function handlePostback(sender_psid, received_postback) {
 
         console.log("[알림] 이번 주 월요일: " + startday.toString())
 
-        //let responssse = "";  // 빈 텍스트 생성
+        let responssse = "";  // 빈 텍스트 생성
         let exception1 = false;
         const url = `https://schoolmenukr.ml/api/high/S100000591?month=${month}&allergy=hidden`;  // https://github.com/5d-jh/school-menu-api
         let weeknum = 1;
@@ -333,8 +333,10 @@ function handlePostback(sender_psid, received_postback) {
                             let ebrkfst = obj_ex.menu[startday - 1].breakfast;  // 다음달 JSON에서 아침 가져오기
                             let elunch = obj_ex.menu[startday - 1].lunch;  // 다음달 JSON에서 점심 가져오기
                             let ediner = obj_ex.menu[startday - 1].dinner;  // 다음달 JSON에서 저녁 가져오기
-                            response = response + `${month + 1}월 ${edate}일(${week}) 급식입니다.\n[아침] ${ebrkfst}\n[점심] ${elunch}\n[저녁] ${ediner}\n\n`;
-                            console.log(`[예외] 응답 : \n${response}`);
+                            responssse = responssse + `${month + 1}월 ${edate}일(${week}) 급식입니다.\n[아침] ${ebrkfst}\n[점심] ${elunch}\n[저녁] ${ediner}\n\n`;
+                            console.log(`[예외] 응답 : \n${responssse}`);
+                            callSendAPI(sender_psid, responssse);
+                            console.log('[예외] 전송')
                         }
                     });
                     console.log("[예외] 완료");
@@ -344,19 +346,22 @@ function handlePostback(sender_psid, received_postback) {
                 let jbrkfst = obj.menu[startday - 1].breakfast;  // JSON에서 아침 가져오기
                 let jlunch = obj.menu[startday - 1].lunch;  // JSON에서 점심 가져오기
                 let jdiner = obj.menu[startday - 1].dinner;  // JSON에서 저녁 가져오기
-                response = response + `${month}월 ${jdate}일(${week}) 급식입니다.\n[아침] ${jbrkfst}\n[점심] ${jlunch}\n[저녁] ${jdiner}\n\n`
+                responssse = responssse + `${month}월 ${jdate}일(${week}) 급식입니다.\n[아침] ${jbrkfst}\n[점심] ${jlunch}\n[저녁] ${jdiner}\n\n`
                 console.log(`${startday}일 확인`);
                 weeknum++;  // 요일 증가. 초기값 1. 월~금까지.
                 startday++;  // 월요일 startday 날짜 증가. 월 -> 금까지.
             }
             if (exception1 == true) {
-                callSendAPI(sender_psid, response);
+                console.log(responssse)
+                // callSendAPI(sender_psid, responssse);
                 console.log(`[예외] 종료`);
             } else if (exception1 == false) {
-                callSendAPI(sender_psid, response);
+                console.log(responssse)
+                callSendAPI(sender_psid, responssse);
                 console.log(`[정상] 종료`);
             }
         });
+        console.log('debug A')
         //callSendAPI(sender_psid, response);
         //console.log('[알림] Week 메시지 전송');
     } else if (payload == "today") {  // 오늘의 급식 고정 메뉴 호출 시

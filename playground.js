@@ -48,7 +48,7 @@ const url = `https://schoolmenukr.ml/api/high/S100000591?month=${month}&allergy=
 let weeknum = 1;
 request(url, (err, res, body) => {
     json = JSON.parse(body);
-    console.log(json); // 파싱한 json 로그 출력
+    // console.log(json); // 파싱한 json 로그 출력
     const obj = JSON.parse(body);  // https://hianna.tistory.com/457 JSON파싱 자바스크립트 객채화
     for (var i = 0; i < 5 ; i++){  // 월요일부터 5일간의 (월 - 금)을 하나하나 작성함
         //meal = json['menu'][startday - 1]  // Array는 0번째부터 카운트하므로 -1
@@ -83,7 +83,7 @@ request(url, (err, res, body) => {
         let jlunch = obj.menu[startday - 1].lunch;  // JSON에서 점심 가져오기
         let jdiner = obj.menu[startday - 1].dinner;  // JSON에서 저녁 가져오기
         responssse = responssse + `${month}월 ${jdate}일(${week}) 급식입니다.\n[아침] ${jbrkfst}\n[점심] ${jlunch}\n[저녁] ${jdiner}\n\n`
-        console.log('확인');
+        console.log(`${startday}일 확인`);
         weeknum++;  // 요일 증가. 초기값 1. 월~금까지.
         startday++;  // 월요일 startday 날짜 증가. 월 -> 금까지.
     }

@@ -66,10 +66,15 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     agent.handleRequest(intentMap);
 });
 
+function today_info() {
+    //
+}
+
 
 function today_meal() {
 
     // About today meal...
+
 };
 
 

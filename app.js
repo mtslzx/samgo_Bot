@@ -277,7 +277,7 @@ function handlePostback(sender_psid, received_postback) {
         let samgo_breakfast, samgo_lunch, samgo_dinner;
         console.log("[알림] TimeZone 초기화 " + nd);
         console.log("[알림] 수정된 날짜: " + year.toString() + "-" + month.toString() + "-" + date.toString())
-// 이번 주 월요일 구하기
+        // 이번 주 월요일 구하기
         let startday = date;
         if (week == '토') {
             startday = date + 2;
@@ -350,10 +350,10 @@ function handlePostback(sender_psid, received_postback) {
                 startday++;  // 월요일 startday 날짜 증가. 월 -> 금까지.
             }
             if (exception1 == true) {
-                callSendAPI(responssse)
+                callSendAPI(sender_psid, responssse);
                 console.log(`[예외] 종료`);
             } else if (exception1 == false) {
-                callSendAPI(responssse)
+                callSendAPI(sender_psid, responssse);
                 console.log(`[정상] 종료`);
             }
         });

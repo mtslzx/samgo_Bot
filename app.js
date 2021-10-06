@@ -347,6 +347,7 @@ function handlePostback(sender_psid, received_postback) {
                 let jlunch = obj.menu[startday - 1].lunch;  // JSON에서 점심 가져오기
                 let jdiner = obj.menu[startday - 1].dinner;  // JSON에서 저녁 가져오기
                 responssse = responssse + `${month}월 ${jdate}일(${week}) 급식입니다.\n[아침] ${jbrkfst}\n[점심] ${jlunch}\n[저녁] ${jdiner}\n\n`
+                callSendAPI(sender_psid, responssse);
                 console.log(`${startday}일 확인`);
                 weeknum++;  // 요일 증가. 초기값 1. 월~금까지.
                 startday++;  // 월요일 startday 날짜 증가. 월 -> 금까지.

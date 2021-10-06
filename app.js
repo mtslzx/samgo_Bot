@@ -5,7 +5,9 @@ Facebook Tutorial Guide 참조.
 */
 
 'use strict';
-const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
+// 아래의 두 값은 알려지면 안됩니다.
+const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;  // facebook 페이지의 고유한 PAGE ACCESS TOKEN을 환경변수로 입력받습니다.
+const PERSONA_ID = process.env.PERSONA_ID;  // facebook 메신저에서 추가된 PERSONA의 고유한 ID를 환경변수로 입력받습니다. https://developers.facebook.com/docs/messenger-platform/send-messages/personas
 // Imports dependencies and set up http server
 const
     request = require('request'),
@@ -95,7 +97,9 @@ function handleMessage(sender_psid, received_message) {
         console.log('2-2'); //debug
         response = {
             "text": `"${received_message.text}"라고 하셨나요? 아직 저는 '오늘의 급식'과 '내일의 급식'만 이해 할 수 있어요!`,
+
         };
+        callSendAPI(sender_psid, response);
     } else if (received_message.text == "오늘의 급식") {  // 오늘의 급식 기능
         //오늘 날짜를 가져옵니다.
         console.log('[시작] 오늘의 급식'); //debug
@@ -317,10 +321,8 @@ function handlePostback(sender_psid, received_postback) {
         const WEEKDAY = ['일', '월', '화', '수', '목', '금', '토'];  // https://mizzo-dev.tistory.com/entry/JavaScript%EB%82%A0%EC%A7%9C-Date-%ED%99%9C%EC%9A%A9%ED%95%B4%EC%84%9C-%EC%9A%94%EC%9D%BC-%EA%B5%AC%ED%95%98%EA%B8%B0
         let week = WEEKDAY[nd.getDay()];  // 요일 찾기
         let samgo_breakfast, samgo_lunch, samgo_dinner;
-
         console.log("[알림] TimeZone 초기화 " + nd);
         console.log("[알림] 수정된 날짜: " + year.toString() + "-" + month.toString() + "-" + date.toString())
-
         const url = `https://schoolmenukr.ml/api/high/S100000591?date=${date}&allergy=hidden`;  // https://github.com/5d-jh/school-menu-api
         request(url, (err, res, body) => {
             json = JSON.parse(body);
@@ -377,13 +379,40 @@ function callSendAPI(sender_psid, response) {
         "json": request_body
     }, (err, res, body) => {
         if (!err) {
-            console.log('message sent!')
+            console.log('[callSendAPI] 전송완료!')
         } else {
-            console.error("Unable to send message:" + err);
+            console.error("[callSendAPI] 에러:" + err);
         }
     });
 }
-console.log('[초기화] CallSendAPI 완료!');
+
+function callSendAPIPersona(sender_psid, response) {
+    // Construct the message body
+    let request_body = {
+        "recipient":{
+            "id": sender_psid
+        },
+        "message":{
+            "text": response,
+        },
+        "persona_id": PERSONA_ID
+    }
+
+    // Send the HTTP request to the Messenger Platform
+    request({
+        "uri": "https://graph.facebook.com/v2.6/me/messages",
+        "qs": { "access_token": PAGE_ACCESS_TOKEN },
+        "method": "POST",
+        "json": request_body
+    }, (err, res, body) => {
+        if (!err) {
+            console.log('[callSendAPIPersona] 전송완료!')
+        } else {
+            console.error("[callSendAPIPersona] 에러:" + err);
+        }
+    });
+}
+console.log('[초기화] callSendAPI & callSendAPIP');
 console.log('[초기화] 완료!');
 
 

@@ -334,7 +334,7 @@ function handlePostback(sender_psid, received_postback) {
                             let elunch = obj_ex.menu[startday - 1].lunch;  // 다음달 JSON에서 점심 가져오기
                             let ediner = obj_ex.menu[startday - 1].dinner;  // 다음달 JSON에서 저녁 가져오기
                             response = response + `${month + 1}월 ${edate}일(${week}) 급식입니다.\n[아침] ${ebrkfst}\n[점심] ${elunch}\n[저녁] ${ediner}\n\n`;
-                            console.log(`[예외] 응답 : \n${responssse}`);
+                            console.log(`[예외] 응답 : \n${response}`);
                         }
                     });
                     console.log("[예외] 완료");

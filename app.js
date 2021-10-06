@@ -335,11 +335,14 @@ function handlePostback(sender_psid, received_postback) {
                             let ediner = obj_ex.menu[startday - 1].dinner;  // 다음달 JSON에서 저녁 가져오기
                             responssse = responssse + `${month + 1}월 ${edate}일(${week}) 급식입니다.\n[아침] ${ebrkfst}\n[점심] ${elunch}\n[저녁] ${ediner}\n\n`;
                             console.log(`[예외] 응답 : \n${responssse}`);
-                            callSendAPI(sender_psid, responssse);
-                            console.log('[예외] 전송')
                         }
                     });
                     console.log("[예외] 완료");
+                    response = {
+                        "text" : responssse.toString()
+                    }
+                    callSendAPI(sender_psid, responssse);
+                    console.log('[예외] 전송')
                     break;  // 예외상황 벗어나기
                 }
                 let jdate = obj.menu[startday - 1].date;  // JSON에서 날짜 가져오기
@@ -347,22 +350,25 @@ function handlePostback(sender_psid, received_postback) {
                 let jlunch = obj.menu[startday - 1].lunch;  // JSON에서 점심 가져오기
                 let jdiner = obj.menu[startday - 1].dinner;  // JSON에서 저녁 가져오기
                 responssse = responssse + `${month}월 ${jdate}일(${week}) 급식입니다.\n[아침] ${jbrkfst}\n[점심] ${jlunch}\n[저녁] ${jdiner}\n\n`
-                callSendAPI(sender_psid, responssse);
+                //callSendAPI(sender_psid, responssse);
                 console.log(`${startday}일 확인`);
                 weeknum++;  // 요일 증가. 초기값 1. 월~금까지.
                 startday++;  // 월요일 startday 날짜 증가. 월 -> 금까지.
             }
             if (exception1 == true) {
-                console.log(responssse)
+                //console.log(responssse)
                 // callSendAPI(sender_psid, responssse);
                 console.log(`[예외] 종료`);
             } else if (exception1 == false) {
-                console.log(responssse)
-                callSendAPI(sender_psid, responssse);
+                //console.log(responssse)
+                response = {
+                    "text" : responssse.toString()
+                }
+                callSendAPI(sender_psid, response);
                 console.log(`[정상] 종료`);
             }
         });
-        console.log('debug A')
+        //console.log('debug A')
         //callSendAPI(sender_psid, response);
         //console.log('[알림] Week 메시지 전송');
     } else if (payload == "today") {  // 오늘의 급식 고정 메뉴 호출 시

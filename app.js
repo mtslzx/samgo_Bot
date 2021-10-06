@@ -96,7 +96,7 @@ function handleMessage(sender_psid, received_message) {
         // will be added to the body of our request to the Send API
         console.log('2-2'); //debug
         response = {
-            "text": `"${received_message.text}"라고 하셨나요? 아직 저는 '오늘의 급식'과 '내일의 급식'만 이해 할 수 있어요!`,
+            "text": `"${received_message.text}"라고 하셨나요? 아직 저는 '오늘의 급식'과 '내일의 급식'만 이해 할 수 있어요!\n(띄워쓰기 포함)`,
 
         };
         callSendAPI(sender_psid, response);
@@ -263,7 +263,99 @@ function handlePostback(sender_psid, received_postback) {
         }, 1000);
         console.log('[알림] Welcome 메시지 전송');
     } else if (payload == "week") {
-        response = "아직 개발중이에요!"
+        console.log('[시작] 이번주 급식'); // debug
+        var json; // json 윗쪽에 변수 선언
+        let now_date = new Date(); // wingnim.tistory.com/6
+        let offset = +9; // Heroku 서버 위치에 따른 시간대 맞춤
+        var utc = now_date.getTime() + (now_date.getTimezoneOffset() * 60000);
+        var nd = new Date(utc + (3600000 * offset));
+        let year = nd.getFullYear(); // 년도
+        let month = nd.getMonth() + 1;  // 월  여기 +1이 왜 있을까?
+        let date = nd.getDate(); // 날짜
+        const WEEKDAY = ['일', '월', '화', '수', '목', '금', '토'];  // https://mizzo-dev.tistory.com/entry/JavaScript%EB%82%A0%EC%A7%9C-Date-%ED%99%9C%EC%9A%A9%ED%95%B4%EC%84%9C-%EC%9A%94%EC%9D%BC-%EA%B5%AC%ED%95%98%EA%B8%B0
+        let week = WEEKDAY[nd.getDay()];  // 요일 찾기
+        let samgo_breakfast, samgo_lunch, samgo_dinner;
+        console.log("[알림] TimeZone 초기화 " + nd);
+        console.log("[알림] 수정된 날짜: " + year.toString() + "-" + month.toString() + "-" + date.toString())
+// 이번 주 월요일 구하기
+        let startday = date;
+        if (week == '토') {
+            startday = date + 2;
+            console.log(`보정된 이번 주 월요일 : ${startday}`)
+        } else if (week == '일') {
+            startday = date + 1;
+            console.log(`보정된 이번 주 월요일 : ${startday}`)
+        } else if (week == '월') {
+            startday = date + 0;
+            console.log(`보정된 이번 주 월요일 : ${startday}`)
+        } else if (week == '화') {
+            startday = date - 1;
+            console.log(`보정된 이번 주 월요일 : ${startday}`)
+        } else if (week == '수') {
+            startday = date - 2;
+            console.log(`보정된 이번 주 월요일 : ${startday}`)
+        } else if (week == '목') {
+            startday = date - 3;
+            console.log(`보정된 이번 주 월요일 : ${startday}`)
+        } else if (week == '금') {
+            startday = date - 4;
+            console.log(`보정된 이번 주 월요일 : ${startday}`)
+        }
+
+        console.log("[알림] 이번 주 월요일: " + startday.toString())
+
+        let responssse = "";  // 빈 텍스트 생성
+        let exception1 = false;
+        const url = `https://schoolmenukr.ml/api/high/S100000591?month=${month}&allergy=hidden`;  // https://github.com/5d-jh/school-menu-api
+        let weeknum = 1;
+        request(url, (err, res, body) => {
+            json = JSON.parse(body);
+            // console.log(json); // 파싱한 json 로그 출력
+            const obj = JSON.parse(body);  // https://hianna.tistory.com/457 JSON파싱 자바스크립트 객채화
+            for (var i = 0; i < 5 ; i++){  // 월요일부터 5일간의 (월 - 금)을 하나하나 작성함
+                //meal = json['menu'][startday - 1]  // Array는 0번째부터 카운트하므로 -1
+                week = WEEKDAY[weeknum];  // 요일 선택. 초기값 1 / 월요일부터 시작하도록 고안되었으니 요일은 무조건 월요일 부터 시작함.
+                if (typeof obj.menu[startday - 1] == "undefined") {  // https://stackoverflow.com/questions/6728424/array-out-of-bounds-comparison-with-undefined-or-length-check
+                    console.log('[예외] 다음 달 확인')  // 예외 상황 구별용 예) 월말 30일에 조회할 경우 30 31 32 ... 로 없는 날짜를 조회하게 됨. 그러므로 JSON array에 정의되지 않은 부분을 접근할 경우 확인하기
+                    // TODO 남은 사이클을 알아내서 startday 를 1로 바꾸고 다음달에 남은 사이클만큼 더 조회하면 될듯
+                    // TODO 만약 30일날 조회했고 31일이 이달의 마지막날이면 30 31 32 <- 여기서 문제가 생기니 i값을 끌어와서 다음달 1일 부터 시작하면 해결일듯함
+                    // TODO 같은 for문을 쓰면 될듯
+                    // TODO 여러개 나누어서 보낼까 한번에 보낼까
+                    // TODO 12월 같은 경우 오류 가능성 / 물론 12월 31일에 쓸 사람이 있나 싶은데...
+                    exception1 = true;  // 예외 상황 처리용도로 예외상황알림
+                    startday = 1;  // 다음달로 넘어가면 1일부터 조회할 것이므로
+                    const except_url = `https://schoolmenukr.ml/api/high/S100000591?month=${month + 1}&allergy=hidden`;  // 예외로 인한 다음 달 불러오기
+                    request(except_url, (err, res, body) => {
+                        const obj_ex = JSON.parse(body);
+                        for (; i < 5; i++) {
+                            week = WEEKDAY[weeknum];  // 요일 선택.
+                            let edate = obj_ex.menu[startday - 1].date;  // 다음달 JSON에서 날짜 가져오기
+                            let ebrkfst = obj_ex.menu[startday - 1].breakfast;  // 다음달 JSON에서 아침 가져오기
+                            let elunch = obj_ex.menu[startday - 1].lunch;  // 다음달 JSON에서 점심 가져오기
+                            let ediner = obj_ex.menu[startday - 1].dinner;  // 다음달 JSON에서 저녁 가져오기
+                            responssse = responssse + `${month + 1}월 ${edate}일(${week}) 급식입니다.\n[아침] ${ebrkfst}\n[점심] ${elunch}\n[저녁] ${ediner}\n\n`;
+                            console.log(`[예외] 응답 : \n${responssse}`);
+                        }
+                    });
+                    console.log("[예외] 완료");
+                    break;  // 예외상황 벗어나기
+                }
+                let jdate = obj.menu[startday - 1].date;  // JSON에서 날짜 가져오기
+                let jbrkfst = obj.menu[startday - 1].breakfast;  // JSON에서 아침 가져오기
+                let jlunch = obj.menu[startday - 1].lunch;  // JSON에서 점심 가져오기
+                let jdiner = obj.menu[startday - 1].dinner;  // JSON에서 저녁 가져오기
+                responssse = responssse + `${month}월 ${jdate}일(${week}) 급식입니다.\n[아침] ${jbrkfst}\n[점심] ${jlunch}\n[저녁] ${jdiner}\n\n`
+                console.log(`${startday}일 확인`);
+                weeknum++;  // 요일 증가. 초기값 1. 월~금까지.
+                startday++;  // 월요일 startday 날짜 증가. 월 -> 금까지.
+            }
+            if (exception1 == true) {
+                console.log(`[예외] 종료`);
+            } else if (exception1 == false) {
+                console.log(responssse);
+                console.log(`[정상] 종료`);
+            }
+        });
         callSendAPI(sender_psid, response);
         console.log('[알림] Week 메시지 전송');
     } else if (payload == "today") {  // 오늘의 급식 고정 메뉴 호출 시
